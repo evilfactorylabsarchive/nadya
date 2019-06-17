@@ -51,3 +51,5 @@ Or you can use regular `yarn dev` command from specific directory (`app` or `web
 We use prettier to format our code. Configuration are placed with name `.prettierrc`. Just write
 your code without worrying about format (space/tab? 2 space/4 space?), your code will be formatted
 as you commit your changes.
+
+Consider to using [commitizen](https://commitizen.github.io/cz-cli/) for writing a commit message.
