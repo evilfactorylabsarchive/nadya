@@ -1,6 +1,6 @@
 {
   "name": "nadya-web",
-  "alias": "nadya-web.evilfactory.now.sh",
+  "alias": "nadya.app",
   "version": 2,
   "builds": [{ "src": "next.config.js", "use": "@now/next" }]
 }
