@@ -1,0 +1,20 @@
+[
+  {
+    "id": "digital-ocean",
+    "title": "Digital Ocean",
+    "color": "#008bcf",
+    "url": "https://www.digitalocean.com"
+  },
+  {
+    "id": "spotify",
+    "title": "Spotify",
+    "color": "#1db954",
+    "url": "https://www.spotify.com"
+  },
+  {
+     "id": "linode",
+     "title": "Linode",
+     "color": "#35a56b",
+     "url": "https://www.linode.com"
+  }
+]
