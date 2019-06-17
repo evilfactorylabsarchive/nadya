@@ -1,0 +1,14 @@
+{
+  "name": "web",
+  "version": "0.1.0",
+  "scripts": {
+    "start": "next build && next start",
+    "dev": "next dev -p 1337",
+    "build": "next build && next export"
+  },
+  "dependencies": {
+    "next": "^8.1.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  }
+}

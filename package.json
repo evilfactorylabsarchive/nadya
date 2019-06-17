@@ -1,0 +1,31 @@
+{
+  "name": "nadya",
+  "version": "0.1.0",
+  "description": "subscription management done right ",
+  "repository": "git@github.com:evilfactorylabs/nadya.git",
+  "author": "Nadya Team <nadya@evilfactory.id>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "format": "prettier {app,web}/**/*.js --write",
+    "app:dev": "yarn workspace app start",
+    "app:start": "yarn workspace app start",
+    "app:test": "yarn workspace app test",
+    "web:start": "yarn workspace web start",
+    "web:dev": "yarn workspace web dev",
+    "web:test": "yarn workspace web test"
+  },
+  "workspaces": [
+    "web",
+    "app"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn format"
+    }
+  },
+  "devDependencies": {
+    "husky": "^2.4.1",
+    "prettier": "^1.18.2"
+  }
+}
