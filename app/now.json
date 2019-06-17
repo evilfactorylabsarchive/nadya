@@ -1,6 +1,6 @@
 {
   "name": "nadya-app",
-  "alias": "nadya-app.evilfactory.now.sh",
+  "alias": "web.nadya.app",
   "version": 2,
   "builds": [
     {
