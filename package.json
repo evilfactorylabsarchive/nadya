@@ -7,7 +7,6 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "format": "prettier {app,web}/**/*.js --write",
     "app:dev": "yarn workspace app start",
     "app:start": "yarn workspace app start",
     "app:test": "yarn workspace app test",
@@ -21,11 +20,12 @@
   ],
   "husky": {
     "hooks": {
-      "pre-commit": "yarn format"
+      "pre-commit": "precise-commits"
     }
   },
   "devDependencies": {
     "husky": "^2.4.1",
+    "precise-commits": "^1.0.2",
     "prettier": "^1.18.2"
   }
 }
