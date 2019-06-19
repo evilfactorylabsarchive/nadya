@@ -11,7 +11,7 @@
   "routes": [
     { "src": "/", "status": 301, "headers": { "Location": "/app/" } },
     { "src": "/web/(.*)", "dest": "web/$1" },
-    { "src": "/app/*", "dest": "app/index.html" },
+    { "src": "/app/", "dest": "app/index.html" },
     {
       "src": "/static/(.*)",
       "headers": { "cache-control": "s-maxage=31536000,immutable" },
