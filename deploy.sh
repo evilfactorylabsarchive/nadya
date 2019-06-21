@@ -35,7 +35,7 @@ deploy_app() {
   APP_URL=$(curl "https://api.zeit.co/v4/now/deployments?teamId=$TEAM_ID&projectId=$PROJECT_APP_ID" -H "Authorization: Bearer $NOW_TOKEN" | jq '.deployments[0].url')
   # comment to PR
   curl -s -H "Authorization: token $GH_TOKEN" \
-    -X POST -d '{"body": "Current deployment URL: $WEB_URL"}' \
+    -X POST -d '{"body": "Current deployment URL: $APP_URL"}' \
     "https://api.github.com/repos/evilfactorylabs/nadya/issues/$TRAVIS_PULL_REQUEST/comments"
 }
 
