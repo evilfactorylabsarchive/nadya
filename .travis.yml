@@ -2,12 +2,13 @@ language: node_js
 node_js:
   - "node"
 cache: yarn
+
 before_script:
   - yarn global add now
+
 install: true
+
 script: "true"
-deploy:
-  provider: script
-  script: bash ./deploy.sh
-  on:
-    all_branches: true
+
+after_script:
+  - bash ./deploy.sh
