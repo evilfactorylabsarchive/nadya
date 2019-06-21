@@ -4,6 +4,7 @@ node_js:
 cache: yarn
 before_script:
   - yarn global add now
+install: true
 script: "true"
 deploy:
   provider: script
