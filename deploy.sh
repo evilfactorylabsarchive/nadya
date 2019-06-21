@@ -13,12 +13,20 @@ else
   ENV_TARGET=staging
 fi
 
-# deploy web to target
-echo "> Deploying app with $ENV_TARGET environment..."
-now -A ./app/now.json --target $ENV_TARGET --token=$NOW_TOKEN --scope evilfactory
+CHANGES=$(git --no-pager diff --name-only FETCH_HEAD $(git merge-base FETCH_HEAD master))
 
-# deploy app to target
-echo "> Deploying web with $ENV_TARGET environment..."
-now -A ./web/now.json --target $ENV_TARGET --token=$NOW_TOKEN --scope evilfactory
+if [[ -n "$(grep '^web') <<< "$CHANGES")" ]]; then
+  # deploy web to target
+  echo "> Deploying app with $ENV_TARGET environment..."
+  cd ./web && now --target $ENV_TARGET --token=$NOW_TOKEN --scope evilfactory
+  cd ..
+fi
+
+if [[ -n "$(grep '^app') <<< "$CHANGES")" ]]; then
+  # deploy app to target
+  echo "> Deploying web with $ENV_TARGET environment..."
+  cd app && now --target $ENV_TARGET --token=$NOW_TOKEN --scope evilfactory
+  cd ..
+fi
 
 echo "> Done"
