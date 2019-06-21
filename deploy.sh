@@ -15,10 +15,10 @@ fi
 
 # deploy web to target
 echo "> Deploying app with $ENV_TARGET environment..."
-cd app && now --target $ENV_TARGET --token=$NOW_TOKEN --scope evilfactory
+now -A ./app/now.json --target $ENV_TARGET --token=$NOW_TOKEN --scope evilfactory
 
 # deploy app to target
-echo "> Deploying wen with $ENV_TARGET environment..."
-cd ../web && now --target $ENV_TARGET --token=$NOW_TOKEN --scope evilfactory
+echo "> Deploying web with $ENV_TARGET environment..."
+now -A ./web/now.json --target $ENV_TARGET --token=$NOW_TOKEN --scope evilfactory
 
 echo "> Done"
