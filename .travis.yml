@@ -1,5 +1,7 @@
-language: bash
-install: true
+language: generic
+node_js:
+  - "node"
+cache: npm
 deploy:
   provider: script
   script: bash ./deploy.sh

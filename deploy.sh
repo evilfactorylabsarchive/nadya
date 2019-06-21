@@ -13,9 +13,6 @@ else
   ENV_TARGET=staging
 fi
 
-# download now client
-curl -sfLS https://zeit.co/download.sh | sh
-
 # deploy web to target
 echo "> Deploying app with $ENV_TARGET environment..."
 cd app && now --target $ENV_TARGET --token=$NOW_TOKEN
