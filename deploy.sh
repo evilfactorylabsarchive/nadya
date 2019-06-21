@@ -20,10 +20,10 @@ deploy_web() {
   echo "> Deploying app with $ENV_TARGET environment..."
   cd ./web && now --target $ENV_TARGET --token=$NOW_TOKEN --scope evilfactory
   cd ..
-  WEB_URL=$(curl "https://api.zeit.co/v4/now/deployments?teamId=$TEAM_ID&projectId=$PROJECT_WEB_ID" -H "Authorization: Bearer $NOW_TOKEN" | jq '.deployments[0].url')
+  WEB_URL=$(curl "https://api.zeit.co/v4/now/deployments?teamId=$TEAM_ID&projectId=$PROJECT_WEB_ID" -H "Authorization: Bearer $NOW_TOKEN" | jq -r '.deployments[0].url')
   # comment to PR
   curl -s -H "Authorization: token $GH_TOKEN" \
-    -X POST -d '{"body": "Current deployment URL: '$WEB_URL'"}' \
+    -X POST -d '{"body": "Current deployment URL: https://'$WEB_URL'"}' \
     "https://api.github.com/repos/evilfactorylabs/nadya/issues/$TRAVIS_PULL_REQUEST/comments"
 }
 
@@ -32,10 +32,10 @@ deploy_app() {
   echo "> Deploying web with $ENV_TARGET environment..."
   cd app && now --target $ENV_TARGET --token=$NOW_TOKEN --scope evilfactory
   cd ..
-  APP_URL=$(curl "https://api.zeit.co/v4/now/deployments?teamId=$TEAM_ID&projectId=$PROJECT_APP_ID" -H "Authorization: Bearer $NOW_TOKEN" | jq '.deployments[0].url')
+  APP_URL=$(curl "https://api.zeit.co/v4/now/deployments?teamId=$TEAM_ID&projectId=$PROJECT_APP_ID" -H "Authorization: Bearer $NOW_TOKEN" | jq -r '.deployments[0].url')
   # comment to PR
   curl -s -H "Authorization: token $GH_TOKEN" \
-    -X POST -d '{"body": "Current deployment URL: '$APP_URL'"}' \
+    -X POST -d '{"body": "Current deployment URL: https://'$APP_URL'"}' \
     "https://api.github.com/repos/evilfactorylabs/nadya/issues/$TRAVIS_PULL_REQUEST/comments"
 }
 
