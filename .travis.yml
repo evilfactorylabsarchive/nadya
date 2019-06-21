@@ -1,6 +1,7 @@
+language: bash
+install: true
 deploy:
   provider: script
-  language: minimal
   script: bash ./deploy.sh
   on:
     all_branches: true
