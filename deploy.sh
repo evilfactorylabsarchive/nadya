@@ -13,15 +13,12 @@ else
   ENV_TARGET=staging
 fi
 
-# switch to team
-now switch evilfactory
-
 # deploy web to target
 echo "> Deploying app with $ENV_TARGET environment..."
-cd app && now --target $ENV_TARGET --token=$NOW_TOKEN
+cd app && now --target $ENV_TARGET --token=$NOW_TOKEN --scope evilfactory
 
 # deploy app to target
 echo "> Deploying wen with $ENV_TARGET environment..."
-cd ../web && now --target $ENV_TARGET --token=$NOW_TOKEN
+cd ../web && now --target $ENV_TARGET --token=$NOW_TOKEN --scope evilfactory
 
 echo "> Done"
