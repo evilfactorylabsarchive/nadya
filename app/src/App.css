@@ -11,3 +11,15 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.u-w100 {
+  width: 100%;
+}
+
+.u-mb1 {
+  margin-bottom: 1rem;
+}
+
+.u-pa1 {
+  padding: 1rem;
+}
