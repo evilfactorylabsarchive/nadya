@@ -9,15 +9,29 @@ fi
 # is this on master branch or something else?
 if [[ $TRAVIS_PULL_REQUEST == "false" ]] && [[ $TRAVIS_BRANCH == "master" ]]; then
   ENV_TARGET=production
+elif [[ $TRAVIS_BRANCH == "canary" ]]; then
+  ENV_TARGET=canary
 else
   ENV_TARGET=staging
 fi
 
-CHANGES=$(git --no-pager diff --name-only $TRAVIS_COMMIT_RANGE)
+if [[ -n "$TAVIS_BRANCH" ]]; then
+  BRANCH_TYPE=$TRAVIS_BRANCH
+else
+  BRANCH_TYPE=canary
+fi
+
+if [[ -n "$TRAVIS_COMMIT_RANGE" ]]; then
+  COMMIT_RANGE=$TRAVIS_COMMIT_RANGE
+else
+  COMMIT_RANGE="FETCH_HEAD $(git merge-base FETCH_HEAD canary)"
+fi
+
+CHANGES=$(git --no-pager diff --name-only $COMMIT_RANGE)
 
 deploy_web() {
   # deploy web to target environment
-  echo "> Deploying app with $ENV_TARGET environment..."
+  echo "> Deploying web with $ENV_TARGET environment..."
   cd ./web && now --target $ENV_TARGET --token=$NOW_TOKEN --scope evilfactory
   cd ..
   WEB_URL=$(curl "https://api.zeit.co/v4/now/deployments?teamId=$TEAM_ID&projectId=$PROJECT_WEB_ID" -H "Authorization: Bearer $NOW_TOKEN" | jq -r '.deployments[0].url')
@@ -29,8 +43,13 @@ deploy_web() {
 
 deploy_app() {
   # deploy app to target environment
-  echo "> Deploying web with $ENV_TARGET environment..."
-  cd app && now --target $ENV_TARGET --token=$NOW_TOKEN --scope evilfactory
+  echo "> Deploying app with $ENV_TARGET environment..."
+  if [[ $ENV_TARGET == "canary" ]]; then
+    NOW_FILE_NAME=now.canary.json
+  else
+    NOW_FILE_NAME=now.json
+  fi
+  cd app && now --target $ENV_TARGET --token=$NOW_TOKEN --scope evilfactory -A $NOW_FILE_NAME
   cd ..
   APP_URL=$(curl "https://api.zeit.co/v4/now/deployments?teamId=$TEAM_ID&projectId=$PROJECT_APP_ID" -H "Authorization: Bearer $NOW_TOKEN" | jq -r '.deployments[0].url')
   # comment to PR
