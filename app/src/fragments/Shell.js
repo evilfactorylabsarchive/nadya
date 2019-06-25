@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
-
-import { Link } from '@reach/router'
+import Dialog from 'components/Dialog'
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(theme => ({
@@ -17,20 +16,23 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-function App() {
+export default function Shell() {
   const classes = useStyles()
+  const [open, setOpen] = useState(false)
   return (
     <div className='App'>
       <header className={classes.content}>
         <p>I'm empty state</p>
       </header>
-      <Link to='/pick'>
-        <Fab color='primary' aria-label='Add' className={classes.fab}>
-          <AddIcon />
-        </Fab>
-      </Link>
+      <Fab
+        onClick={() => setOpen(true)}
+        color='primary'
+        aria-label='Add'
+        className={classes.fab}
+      >
+        <AddIcon />
+      </Fab>
+      <Dialog open={open} handleClose={() => setOpen(false)} />
     </div>
   )
 }
-
-export default App
