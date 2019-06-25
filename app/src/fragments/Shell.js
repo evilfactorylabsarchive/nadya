@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
+import Dialog from 'components/Dialog'
 
-import { Link, navigate } from '@reach/router'
+import { navigate } from '@reach/router'
 import { checkLogin } from '../services/user'
 
 const classes = {
@@ -16,7 +17,11 @@ const classes = {
   }
 }
 
-class App extends Component {
+export default class App extends Component {
+  state = {
+    isDialogOpen: false
+  }
+
   componentDidMount() {
     // FIXME(@108kb): delete this validation
     // after @ri7nz create HoC
@@ -29,19 +34,31 @@ class App extends Component {
         navigate('/onboarding')
       })
   }
+  _handleDialogOpen = () => {
+    this.setState({ isDialogOpen: true })
+  }
+  _handleDialogClose = () => {
+    this.setState({ isDialogOpen: false })
+  }
   render() {
     return (
       <div className='App'>
         <header style={classes.content}>
-          <Link to='/pick'>
-            <Fab color='primary' aria-label='Add' style={classes.fab}>
-              <AddIcon />
-            </Fab>
-          </Link>
+          <p>I'm empty state</p>
         </header>
+        <Fab
+          onClick={this._handleDialogOpen}
+          color='primary'
+          aria-label='Add'
+          style={classes.fab}
+        >
+          <AddIcon />
+        </Fab>
+        <Dialog
+          open={this.state.isDialogOpen}
+          handleClose={this._handleDialogClose}
+        />
       </div>
     )
   }
 }
-
-export default App
