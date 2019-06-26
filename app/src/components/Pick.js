@@ -65,7 +65,8 @@ export default function Pick({
       serviceId: activeSubscription.id,
       title: activeSubscription.title,
       period: costInterval,
-      cost: cost
+      cost: cost,
+      firstBill: startSubscription
     })
       .then(_ => handleTopLevelClose())
       .catch(err => window.alert(err))

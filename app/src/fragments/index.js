@@ -1,7 +1,6 @@
-import Add from './Add'
+import Detail from './Detail'
 import Edit from './Edit'
-import Pick from './Pick'
 import Shell from './Shell'
 import Onboarding from './Onboarding'
 
-export { Add, Edit, Pick, Shell, Onboarding }
+export { Detail, Edit, Shell, Onboarding }
