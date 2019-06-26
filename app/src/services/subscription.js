@@ -1,20 +1,20 @@
 import db from '../db'
 import { generateUuid } from '../utils'
 
-let listener
-
-export async function listenUpdate(cb) {
-  listener = db
+export function listenUpdate(cb) {
+  const listener = db
     .changes({
       since: 'now',
       live: true,
       include_docs: true
     })
     .on('change', change => cb(change))
+    .on('error', _ => listener.cancel())
+  return listener
 }
 
-export function unlistenUpdate() {
-  listener.cancel()
+export function unlistenUpdate(listenerInstance) {
+  listenerInstance.cancel()
 }
 
 export async function deleteSubscription(subscriptionId) {
@@ -23,7 +23,7 @@ export async function deleteSubscription(subscriptionId) {
     const deleteSubscription = await db.remove(doc._id, doc._rev)
     return deleteSubscription
   } catch (err) {
-    console.error(err)
+    throw err
   }
 }
 
@@ -32,7 +32,7 @@ export async function getSubscription(subscriptionId) {
     const subscription = await db.get(subscriptionId)
     return subscription
   } catch (err) {
-    console.error(err)
+    throw err
   }
 }
 
@@ -44,7 +44,7 @@ export async function listSubscription() {
     })
     return subscriptions
   } catch (err) {
-    console.error(err)
+    throw err
   }
 }
 
@@ -63,6 +63,6 @@ export async function addSubscription(payload) {
     })
     return addSubscription
   } catch (err) {
-    console.error(err)
+    throw err
   }
 }

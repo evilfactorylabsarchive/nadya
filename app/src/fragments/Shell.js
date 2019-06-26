@@ -49,17 +49,26 @@ const classes = {
 }
 
 export default class App extends Component {
+  constructor(props) {
+    super(props)
+    this._listener = null
+  }
+
   state = {
     isDialogOpen: false,
     subscriptions: []
   }
 
   componentDidMount() {
-    listSubscription().then(doc => {
-      this.setState({ subscriptions: doc.rows })
-    })
+    listSubscription()
+      .then(doc => {
+        this.setState({ subscriptions: doc.rows })
+      })
+      .catch(err => {
+        throw err
+      })
 
-    listenUpdate(doc => {
+    this._listener = listenUpdate(doc => {
       this.setState({
         subscriptions: [doc, ...this.state.subscriptions]
       })
@@ -75,7 +84,7 @@ export default class App extends Component {
   }
 
   componentWillUnmount() {
-    unlistenUpdate()
+    unlistenUpdate(this._listener)
   }
 
   render() {

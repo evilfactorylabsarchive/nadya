@@ -31,9 +31,13 @@ function AlertDialog({
   subscriptionTitle
 }) {
   const handleDelete = () => {
-    deleteSubscription(subscriptionId).then(() => {
-      navigate('/', { replace: true })
-    })
+    deleteSubscription(subscriptionId)
+      .then(() => {
+        navigate('/', { replace: true })
+      })
+      .catch(err => {
+        throw err
+      })
   }
 
   return (
@@ -87,9 +91,13 @@ export default ({ subscription_id }) => {
   }
 
   useEffect(() => {
-    getSubscription(subscription_id).then(doc => {
-      setSubscription(doc)
-    })
+    getSubscription(subscription_id)
+      .then(doc => {
+        setSubscription(doc)
+      })
+      .catch(err => {
+        throw err
+      })
   }, [subscription_id])
 
   return (
