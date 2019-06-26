@@ -3,10 +3,13 @@ import Navbar from './components/Navbar'
 
 import { render } from 'react-dom'
 import { Router } from '@reach/router'
-import { Add, Edit, Pick, Shell } from './fragments'
+import { Add, Edit, Pick, Shell, Onboarding } from './fragments'
 
 import * as serviceWorker from './serviceWorker'
+
 import './App.css'
+
+// TODO(@ri7nz: create HoC for AuthProvider
 
 render(
   <>
@@ -16,6 +19,7 @@ render(
       <Pick path='/pick' />
       <Add path='/pick/:service_id' />
       <Edit path='/edit/:id' />
+      <Onboarding path='/onboarding' />
     </Router>
   </>,
   document.getElementById('app')

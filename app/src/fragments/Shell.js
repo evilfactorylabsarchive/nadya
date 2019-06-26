@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
+import React, { Component } from 'react'
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
-import Dialog from 'components/Dialog'
-import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles(theme => ({
+import { navigate } from '@reach/router'
+import { checkLogin } from '../services/user'
+
+import DialogLazy from '../components/Lazy'
+
+const classes = {
   fab: {
-    margin: theme.spacing(1),
     position: 'fixed',
     bottom: 10,
     right: 10
@@ -14,25 +16,51 @@ const useStyles = makeStyles(theme => ({
   content: {
     padding: '2rem'
   }
-}))
+}
 
-export default function Shell() {
-  const classes = useStyles()
-  const [open, setOpen] = useState(false)
-  return (
-    <div className='App'>
-      <header className={classes.content}>
-        <p>I'm empty state</p>
-      </header>
-      <Fab
-        onClick={() => setOpen(true)}
-        color='primary'
-        aria-label='Add'
-        className={classes.fab}
-      >
-        <AddIcon />
-      </Fab>
-      <Dialog open={open} handleClose={() => setOpen(false)} />
-    </div>
-  )
+export default class App extends Component {
+  state = {
+    isDialogOpen: false
+  }
+
+  componentDidMount() {
+    // FIXME(@108kb): delete this validation
+    // after @ri7nz create HoC
+    checkLogin()
+      .then(user => {
+        console.log(user)
+      })
+      .catch(_ => {
+        // TODO(@108kb): Redirect to 4xx/5xx route
+        navigate('/onboarding')
+      })
+  }
+  _handleDialogOpen = () => {
+    this.setState({ isDialogOpen: true })
+  }
+  _handleDialogClose = () => {
+    this.setState({ isDialogOpen: false })
+  }
+  render() {
+    return (
+      <div className='App'>
+        <header style={classes.content}>
+          <p>I'm empty state</p>
+        </header>
+        <Fab
+          onClick={this._handleDialogOpen}
+          color='primary'
+          aria-label='Add'
+          style={classes.fab}
+        >
+          <AddIcon />
+        </Fab>
+        <DialogLazy
+          component='./Dialog'
+          open={this.state.isDialogOpen}
+          handleClose={this._handleDialogClose}
+        />
+      </div>
+    )
+  }
 }
