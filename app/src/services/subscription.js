@@ -17,6 +17,25 @@ export function unlistenUpdate() {
   listener.cancel()
 }
 
+export async function deleteSubscription(subscriptionId) {
+  try {
+    const doc = await db.get(subscriptionId)
+    const deleteSubscription = await db.remove(doc._id, doc._rev)
+    return deleteSubscription
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export async function getSubscription(subscriptionId) {
+  try {
+    const subscription = await db.get(subscriptionId)
+    return subscription
+  } catch (err) {
+    console.error(err)
+  }
+}
+
 export async function listSubscription() {
   try {
     const subscriptions = await db.allDocs({
@@ -30,7 +49,7 @@ export async function listSubscription() {
 }
 
 export async function addSubscription(payload) {
-  const { serviceId, title, period, cost } = payload
+  const { firstBill, serviceId, title, period, cost } = payload
   try {
     const addSubscription = await db.put({
       _id: generateUuid(),
@@ -38,8 +57,9 @@ export async function addSubscription(payload) {
       title,
       period,
       cost,
-      created_at: Date.now(),
-      updated_at: null
+      firstBill: new Date(firstBill).getTime(),
+      createdAt: Date.now(),
+      updatedAt: null
     })
     return addSubscription
   } catch (err) {
