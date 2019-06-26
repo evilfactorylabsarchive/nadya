@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
-import Dialog from 'components/Dialog'
 
 import { navigate } from '@reach/router'
 import { checkLogin } from '../services/user'
+
+import DialogLazy from '../components/Lazy'
 
 const classes = {
   fab: {
@@ -54,7 +55,8 @@ export default class App extends Component {
         >
           <AddIcon />
         </Fab>
-        <Dialog
+        <DialogLazy
+          component='./Dialog'
           open={this.state.isDialogOpen}
           handleClose={this._handleDialogClose}
         />
