@@ -2,21 +2,38 @@ import React from 'react'
 import Navbar from './components/Navbar'
 
 import { render } from 'react-dom'
-import { Router } from '@reach/router'
-import { Add, Edit, Pick, Shell, Onboarding } from './fragments'
+import { Router, Location } from '@reach/router'
+import { Detail, Edit, Shell, Onboarding } from './fragments'
 
 import * as serviceWorker from './serviceWorker'
 
 import './App.css'
+
+const NavbarWithTitle = ({ path }) => {
+  // TODO: create better solution for his
+  // maybe using Context or something similar
+  let title = undefined
+  let shouldUseBackIcon = false
+  if (path.includes('edit')) {
+    title = 'Edit Subscription'
+    shouldUseBackIcon = true
+  } else if (path !== '/') {
+    title = 'Detail'
+    shouldUseBackIcon = true
+  }
+  return <Navbar title={title} shouldUseBackIcon={shouldUseBackIcon} />
+}
+
 render(
   <>
-    <Navbar />
+    <Location>
+      {({ location }) => <NavbarWithTitle path={location.pathname} />}
+    </Location>
     <Router>
       <Shell path='/' />
-      <Pick path='/pick' />
-      <Add path='/pick/:service_id' />
-      <Edit path='/edit/:id' />
       <Onboarding path='/onboarding' />
+      <Detail path='/:subscription_id' />
+      <Edit path='/:subscription_id/edit' />
     </Router>
   </>,
   document.getElementById('app')
