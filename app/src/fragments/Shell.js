@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
-
-import { navigate } from '@reach/router'
-import { checkLogin } from '../services/user'
+import AuthHOC from 'components/Auth'
 
 import DialogLazy from '../components/Lazy'
 
@@ -23,18 +21,6 @@ export default class App extends Component {
     isDialogOpen: false
   }
 
-  componentDidMount() {
-    // FIXME(@108kb): delete this validation
-    // after @ri7nz create HoC
-    checkLogin()
-      .then(user => {
-        console.log(user)
-      })
-      .catch(_ => {
-        // TODO(@108kb): Redirect to 4xx/5xx route
-        navigate('/onboarding')
-      })
-  }
   _handleDialogOpen = () => {
     this.setState({ isDialogOpen: true })
   }
@@ -42,7 +28,7 @@ export default class App extends Component {
     this.setState({ isDialogOpen: false })
   }
   render() {
-    return (
+    return AuthHOC(() => (
       <div className='App'>
         <header style={classes.content}>
           <p>I'm empty state</p>
@@ -61,6 +47,6 @@ export default class App extends Component {
           handleClose={this._handleDialogClose}
         />
       </div>
-    )
+    ))
   }
 }
