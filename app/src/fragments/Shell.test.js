@@ -1,5 +1,8 @@
 import Shell from './Shell'
-afterEach(cleanup)
+
+afterAll(async () => {
+  await cleanup()
+})
 
 describe('Fragments: Shell.js', () => {
   test('Fab click & show fullscreen dialog', () => {
