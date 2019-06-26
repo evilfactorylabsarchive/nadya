@@ -5,7 +5,7 @@ import Slide from '@material-ui/core/Slide'
 import MobileStepper from '@material-ui/core/MobileStepper'
 
 import { navigate } from '@reach/router'
-import { registerUser } from '../services/user'
+import { checkLogin, registerUser } from '../services/user'
 
 import Welcome from '../assets/illustrations/welcome.png'
 import Money from '../assets/illustrations/money.png'
@@ -39,7 +39,10 @@ export default function FullScreenDialog() {
     if (activeStep < 2) {
       setActiveStep(prevActiveStep => prevActiveStep + 1)
     } else {
-      return registerUser().then(() => {
+      return checkLogin().then(user => {
+        if (!user.total_rows) {
+          return registerUser().then(() => navigate('/'))
+        }
         navigate('/')
       })
     }

@@ -1,9 +1,9 @@
-import db from '../db'
+import { userDb } from '../db'
 import { generateUuid } from '../utils.js'
 
 export async function checkLogin() {
   try {
-    const user = await db.get('user')
+    const user = await userDb.allDocs()
     return user
   } catch (err) {
     throw err
@@ -12,13 +12,11 @@ export async function checkLogin() {
 
 export async function registerUser() {
   try {
-    const newUser = db.put({
-      _id: 'user',
-      id: generateUuid(),
+    const newUser = userDb.put({
+      _id: generateUuid(),
       name: null,
       created_at: Date.now(),
-      updated_at: null,
-      type: 'user'
+      updated_at: null
     })
     return newUser
   } catch (err) {
