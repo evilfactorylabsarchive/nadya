@@ -1,0 +1,13 @@
+{
+  "extends": ["react-app", "plugin:jest/recommended"],
+  "env": {
+    "jest/globals": true
+  },
+  "globals": {
+    "React": true,
+    "render": true,
+    "cleanup": true,
+    "fireEvent": true
+  },
+  "plugins": ["jest"]
+}

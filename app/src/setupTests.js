@@ -9,11 +9,10 @@ import '@testing-library/react/cleanup-after-each'
 import 'jest-dom/extend-expect'
 
 /*
- * @todo
+ * @todo global
  * set global in lint like prettier or bable
  */
 global.React = React
 global.render = render
 global.cleanup = cleanup
 global.fireEvent = fireEvent
-global.waitForElement = waitForElement

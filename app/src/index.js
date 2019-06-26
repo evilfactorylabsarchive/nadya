@@ -8,9 +8,6 @@ import { Add, Edit, Pick, Shell, Onboarding } from './fragments'
 import * as serviceWorker from './serviceWorker'
 
 import './App.css'
-
-// TODO(@ri7nz: create HoC for AuthProvider
-
 render(
   <>
     <Navbar />
