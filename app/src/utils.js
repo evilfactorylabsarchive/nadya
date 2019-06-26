@@ -14,3 +14,22 @@ export function toCurrency(number) {
   })
   return formatter.format(number)
 }
+
+export function getPeriod(number) {
+  // prevent runtime crash while `number` value still undefined
+  if (!number) return
+  const period = [
+    // we use this because our `period` number was started from index 1
+    // why not 0? because it will confusing our form validation :))
+    { noop: true },
+    {
+      code: 0,
+      label: 'bulan'
+    },
+    {
+      code: 1,
+      label: 'tahun'
+    }
+  ]
+  return period[number].label
+}
