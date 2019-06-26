@@ -9,6 +9,7 @@ import SimpleIcons from 'simple-icons-react-component'
 import { navigate } from '@reach/router'
 
 import { checkLogin } from '../services/user'
+import AuthHOC from 'components/Auth'
 
 import DialogLazy from '../components/Lazy'
 import {
@@ -54,15 +55,6 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    // FIXME(@108kb): delete this validation
-    // after @ri7nz create HoC
-
-    checkLogin().then(user => {
-      if (!user.total_rows) {
-        navigate('/onboarding')
-      }
-    })
-
     listSubscription().then(doc => {
       this.setState({ subscriptions: doc.rows })
     })
@@ -87,7 +79,7 @@ export default class App extends Component {
   }
 
   render() {
-    return (
+    return AuthHOC(() => (
       <div className='App'>
         {!this.state.subscriptions.length && (
           <header style={classes.content}>
@@ -131,6 +123,6 @@ export default class App extends Component {
           handleClose={this._handleDialogClose}
         />
       </div>
-    )
+    ))
   }
 }
