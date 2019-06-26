@@ -15,6 +15,8 @@ import {
   listenUpdate,
   unlistenUpdate
 } from 'services/subscription'
+
+import { navigate } from '@reach/router'
 import { toCurrency } from 'utils'
 
 const classes = {
@@ -89,9 +91,9 @@ export default class App extends Component {
             .filter(({ doc }) => Object.keys(doc).length !== 0)
             .map(({ doc }) => (
               <Card className={classes.card} key={doc._id}>
-                <CardHeader
-                  avatar={
-                    <CardActionArea>
+                <CardActionArea onClick={() => navigate(`/${doc._id}/`)}>
+                  <CardHeader
+                    avatar={
                       <Avatar
                         style={{ backgroundColor: 'transparent' }}
                         aria-label='Recipe'
@@ -99,11 +101,11 @@ export default class App extends Component {
                       >
                         <SimpleIcons name={doc.title} />
                       </Avatar>
-                    </CardActionArea>
-                  }
-                  title={doc.title}
-                  subheader={toCurrency(doc.cost)}
-                />
+                    }
+                    title={doc.title}
+                    subheader={toCurrency(doc.cost)}
+                  />
+                </CardActionArea>
               </Card>
             ))}
         </div>
