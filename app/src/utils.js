@@ -5,3 +5,12 @@ export function generateUuid() {
     return v.toString(16)
   })
 }
+
+export function toCurrency(number) {
+  const formatter = new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+    minimumFractionDigits: 0
+  })
+  return formatter.format(number)
+}
