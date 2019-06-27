@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import Snackbar from '@material-ui/core/Snackbar'
+import IconButton from '@material-ui/core/IconButton'
+import CloseIcon from '@material-ui/icons/Close'
 import dayjs from 'dayjs'
 import {
   Button,
@@ -12,8 +15,7 @@ import {
 
 import { deepOrange } from '@material-ui/core/colors'
 import { makeStyles } from '@material-ui/core/styles'
-
-import { getUser } from 'services/user'
+import { getUser, getUserIdFromLS, updateUser } from 'services/user'
 
 const useStyles = makeStyles(theme => ({
   avatar: {
@@ -36,24 +38,36 @@ const useStyles = makeStyles(theme => ({
 
 export default () => {
   const classes = useStyles()
+  const userId = getUserIdFromLS()
+  const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [user, setUser] = useState({})
   const [userName, setUserName] = useState('')
 
   useEffect(() => {
-    getUser().then(user => {
+    getUser(userId).then(user => {
       setUser(user)
       setUserName(user.name)
     })
-  }, [])
+  }, [userId])
 
   const handleSave = () => {
     const payload = {
-      _id: user._id,
+      _id: userId,
       _rev: user._rev,
       created_at: user.created_at,
       name: userName
     }
-    // TODO(108kb): handle update here
+    updateUser(payload)
+      .then(_ => {
+        setSnackbarOpen(true)
+        getUser(userId).then(user => {
+          setUser(user)
+          setUserName(user.name)
+        })
+      })
+      .catch(err => {
+        throw err
+      })
   }
 
   return (
@@ -104,6 +118,27 @@ export default () => {
           </Button>
         </CardActions>
       </Card>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right'
+        }}
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+        message={<span id='message-id'>Data berhasil disimpan</span>}
+        action={[
+          <IconButton
+            key='close'
+            aria-label='Close'
+            color='inherit'
+            className={classes.close}
+            onClick={() => setSnackbarOpen(false)}
+          >
+            <CloseIcon />
+          </IconButton>
+        ]}
+      />
     </>
   )
 }
