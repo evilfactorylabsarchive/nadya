@@ -20,7 +20,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 
 import { APP_VER } from '../constants'
-import { getUser } from 'services/user'
+import { getUser, getUserIdFromLS } from 'services/user'
 
 const useStyles = makeStyles(theme => ({
   appVer: {
@@ -48,14 +48,15 @@ const useStyles = makeStyles(theme => ({
 
 export default function ButtonAppBar({ title, shouldUseBackIcon }) {
   const classes = useStyles()
+  const userId = getUserIdFromLS()
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [user, setUser] = useState({})
 
   useEffect(() => {
-    getUser().then(user => {
+    getUser(userId).then(user => {
       setUser(user)
     })
-  }, [])
+  }, [userId])
 
   const handleClick = () => {
     if (shouldUseBackIcon) {
@@ -81,7 +82,7 @@ export default function ButtonAppBar({ title, shouldUseBackIcon }) {
             <CardHeader
               avatar={
                 <Avatar className={classes.avatar}>
-                  {user.name ? user.name.chartAt(0).toUpperCase() : 'N'}
+                  {user && user.name ? user.name.charAt(0).toUpperCase() : 'N'}
                 </Avatar>
               }
               title={user.name || 'Nadya User'}
