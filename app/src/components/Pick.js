@@ -94,7 +94,7 @@ export default function Pick({
           </Typography>
         </Toolbar>
       </AppBar>
-      <Card>
+      <Card square={true}>
         <CardContent>
           <FormControl fullWidth margin='normal'>
             <TextField

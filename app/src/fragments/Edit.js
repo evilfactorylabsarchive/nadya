@@ -80,7 +80,7 @@ export default ({ subscription_id }) => {
   }, [subscription_id])
 
   return (
-    <Card>
+    <Card square={true}>
       <CardContent>
         <FormControl fullWidth>
           <TextField
