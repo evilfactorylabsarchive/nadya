@@ -42,13 +42,19 @@ deploy_web() {
 }
 
 deploy_app() {
-  # deploy app to target environment
-  echo "> Deploying app with $ENV_TARGET environment..."
   if [[ $ENV_TARGET == "canary" ]]; then
     NOW_FILE_NAME=now.canary.json
   else
     NOW_FILE_NAME=now.json
   fi
+  # override ENV_TARGET since now doesn't realize canary env
+  if [[ $TRAVIS_PULL_REQUEST == "false" ]]; then
+    ENV_TARGET=production
+    else
+    ENV_TARGET=staging
+  fi
+  # deploy app to target environment
+  echo "> Deploying app with $ENV_TARGET environment..."
   cd app && now --target $ENV_TARGET --token=$NOW_TOKEN --scope evilfactory -A $NOW_FILE_NAME
   cd ..
   APP_URL=$(curl "https://api.zeit.co/v4/now/deployments?teamId=$TEAM_ID&projectId=$PROJECT_APP_ID" -H "Authorization: Bearer $NOW_TOKEN" | jq -r '.deployments[0].url')
