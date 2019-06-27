@@ -15,6 +15,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='up' ref={ref} {...props} />
 })
 
+const onBoardingStyle = {
+  marginTop: '4rem',
+  marginLeft: 'auto',
+  marginRight: 'auto',
+  width: '500px',
+  maxWidth: '100%'
+}
+
 export default function FullScreenDialog() {
   const [activeStep, setActiveStep] = React.useState(0)
   const messages = [
@@ -55,14 +63,16 @@ export default function FullScreenDialog() {
   return (
     <div>
       <Dialog fullScreen open TransitionComponent={Transition}>
-        <img
-          className='u-w100'
-          src={messages[activeStep].image}
-          alt={messages[activeStep].title}
-        />
-        <div className='u-pa1'>
-          <h2 className='u-mb1'>{messages[activeStep].title}</h2>
-          <p>{messages[activeStep].description}</p>
+        <div style={onBoardingStyle}>
+          <img
+            className='u-w100'
+            src={messages[activeStep].image}
+            alt={messages[activeStep].title}
+          />
+          <div className='u-pa1'>
+            <h2 className='u-mb1'>{messages[activeStep].title}</h2>
+            <p>{messages[activeStep].description}</p>
+          </div>
         </div>
         <MobileStepper
           variant='dots'
