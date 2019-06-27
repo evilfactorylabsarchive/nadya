@@ -3,7 +3,7 @@ import Navbar from './components/Navbar'
 
 import { render } from 'react-dom'
 import { Router, Location } from '@reach/router'
-import { Detail, Edit, Shell, Onboarding } from './fragments'
+import { Detail, Edit, Shell, Onboarding, Setting } from './fragments'
 
 import * as serviceWorker from './serviceWorker'
 
@@ -16,6 +16,9 @@ const NavbarWithTitle = ({ path }) => {
   let shouldUseBackIcon = false
   if (path.includes('edit')) {
     title = 'Edit Subscription'
+    shouldUseBackIcon = true
+  } else if (path === '/setting') {
+    title = 'Pengaturan'
     shouldUseBackIcon = true
   } else if (path !== '/') {
     title = 'Detail'
@@ -32,6 +35,7 @@ render(
     <Router>
       <Shell path='/' />
       <Onboarding path='/onboarding' />
+      <Setting path='/setting' />
       <Detail path='/:subscription_id' />
       <Edit path='/:subscription_id/edit' />
     </Router>
