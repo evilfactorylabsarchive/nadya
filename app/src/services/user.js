@@ -1,6 +1,17 @@
 import { userDb } from '../db'
 import { generateUuid } from '../utils.js'
 
+export async function getUser() {
+  try {
+    const user = await userDb.allDocs({
+      include_docs: true
+    })
+    return user.rows[0].doc
+  } catch (err) {
+    throw err
+  }
+}
+
 export async function checkLogin() {
   try {
     const user = await userDb.allDocs()
