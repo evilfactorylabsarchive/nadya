@@ -66,3 +66,22 @@ export async function addSubscription(payload) {
     throw err
   }
 }
+
+export async function updateSubscription(payload) {
+  const { _rev, _id, period, cost, firstBill, createdAt, title } = payload
+  try {
+    const updateSubscription = await db.put({
+      _id,
+      _rev,
+      period,
+      title,
+      cost,
+      firstBill,
+      createdAt,
+      updatedAt: Date.now()
+    })
+    return updateSubscription
+  } catch (err) {
+    throw err
+  }
+}
