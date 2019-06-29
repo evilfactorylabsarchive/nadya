@@ -1,21 +1,24 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import Dialog from '@material-ui/core/Dialog'
-import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
-import IconButton from '@material-ui/core/IconButton'
-import Typography from '@material-ui/core/Typography'
-import CloseIcon from '@material-ui/icons/Close'
-import Slide from '@material-ui/core/Slide'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
-import TextField from '@material-ui/core/TextField'
-import SimpleIcons from 'simple-icons-react-component'
+import { navigate } from '@reach/router'
+import {
+  Dialog,
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  Slide,
+  TextField,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText
+} from '@material-ui/core'
 
-import Subscriptions from '../data.json'
-import LazyPick from './Lazy'
+import SimpleIcons from 'simple-icons-react-component'
+import CloseIcon from '@material-ui/icons/Close'
+
+import Subscriptions from '../assets/data.json'
 
 const useStyles = makeStyles(theme => ({
   list: {
@@ -45,10 +48,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='up' ref={ref} {...props} />
 })
 
-export default function FullScreenDialog({ open, handleClose, title }) {
+export default function FullScreenDialog({ handleClose, title }) {
   const classes = useStyles()
   const [filter, setFilter] = useState('')
-  const [activeSubscription, setActiveSubscription] = useState({})
 
   const subscriptions = Subscriptions.filter(
     subscription =>
@@ -56,10 +58,14 @@ export default function FullScreenDialog({ open, handleClose, title }) {
       subscription.title.toLowerCase().includes(filter.toLowerCase())
   )
 
+  const pick = (index, subscription) => {
+    navigate(`/pick/${index}-${subscription.id}/`)
+  }
+
   return (
     <Dialog
       fullScreen
-      open={open}
+      open
       onClose={handleClose}
       TransitionComponent={Transition}
     >
@@ -68,7 +74,7 @@ export default function FullScreenDialog({ open, handleClose, title }) {
           <IconButton
             edge='start'
             color='inherit'
-            onClick={handleClose}
+            onClick={() => navigate('/')}
             aria-label='Close'
           >
             <CloseIcon />
@@ -87,11 +93,11 @@ export default function FullScreenDialog({ open, handleClose, title }) {
         onChange={input => setFilter(input.target.value)}
       />
       <List component='nav' className={classes.list}>
-        {subscriptions.map(subscription => (
+        {subscriptions.map((subscription, index) => (
           <ListItem
             button
             key={subscription.id}
-            onClick={() => setActiveSubscription(subscription)}
+            onClick={() => pick(index, subscription)}
           >
             <ListItemIcon className={classes.icon}>
               <SimpleIcons name={subscription.title} />
@@ -103,14 +109,6 @@ export default function FullScreenDialog({ open, handleClose, title }) {
           </ListItem>
         ))}
       </List>
-      {activeSubscription && activeSubscription.id && (
-        <LazyPick
-          activeSubscription={activeSubscription}
-          handleClose={() => setActiveSubscription({})}
-          handleTopLevelClose={handleClose}
-          component='./Pick'
-        />
-      )}
     </Dialog>
   )
 }

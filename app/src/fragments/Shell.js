@@ -9,7 +9,6 @@ import SimpleIcons from 'simple-icons-react-component'
 
 import AuthHOC from 'components/Auth'
 
-import DialogLazy from '../components/Lazy'
 import {
   listSubscription,
   listenUpdate,
@@ -99,7 +98,7 @@ export default class App extends Component {
           {this.state.subscriptions
             .filter(({ doc }) => Object.keys(doc).length !== 0)
             .map(({ doc }) => (
-              <Card className={classes.card} key={doc._id}>
+              <Card style={classes.card} key={doc._id}>
                 <CardActionArea onClick={() => navigate(`/${doc._id}/`)}>
                   <CardHeader
                     avatar={
@@ -119,18 +118,12 @@ export default class App extends Component {
             ))}
         </div>
         <Fab
-          onClick={this._handleDialogOpen}
+          onClick={() => navigate('/pick')}
           color='primary'
-          aria-label='Add'
           style={classes.fab}
         >
           <AddIcon />
         </Fab>
-        <DialogLazy
-          component='./Dialog'
-          open={this.state.isDialogOpen}
-          handleClose={this._handleDialogClose}
-        />
       </div>
     ))
   }

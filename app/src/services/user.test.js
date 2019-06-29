@@ -1,29 +1,39 @@
-import { createUserDbInstance } from '../db.helpers'
-import { checkLogin, registerUser } from './user'
+import { checkLogin, registerUser, getUser, updateUser } from './user'
 
-describe('', () => {
-  let db
-
-  beforeAll(async () => {
-    db = await createUserDbInstance()
-  })
-
-  afterAll(async () => {
-    await db.close()
-  })
-
-  it('should connected to db', async () => {
-    const expected = { _id: 'ok' }
-    await db.put(expected)
-    const actual = await db.get('ok')
-    expect(expected._id).toEqual(actual._id)
-  })
-
-  it('should show have user data', async () => {
-    await db.post({
-      name: 'Nadya'
-    })
+describe('user service', () => {
+  it('should check a valid login', async () => {
+    const actual = await registerUser()
     const expected = await checkLogin()
-    expect(expected).toBeTruthy()
+
+    expect(expected.id).toEqual(actual._id)
+  })
+
+  it('should get user', async () => {
+    const expected = await registerUser()
+    const actual = await getUser(expected.id)
+
+    expect(actual.id).toEqual(expected._id)
+  })
+
+  it('should update user', async () => {
+    const user = await registerUser()
+    const payload = {
+      _id: user.id,
+      _rev: user.rev,
+      createdAt: user.createdAt,
+      name: 'evilfactory'
+    }
+    const update = await updateUser(payload)
+    const actual = await getUser(user.id)
+
+    expect(update.ok).toEqual(true)
+    expect(actual.name).toEqual('evilfactory')
+  })
+
+  it('should register new user', async () => {
+    const actual = await registerUser()
+
+    expect(actual.ok).toEqual(true)
+    expect(actual.id).toBeTruthy()
   })
 })

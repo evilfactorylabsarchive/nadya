@@ -1,9 +1,17 @@
 import React from 'react'
-import Navbar from './components/Navbar'
+import Navbar from 'components/Navbar'
+import AuthHoc from 'components/Auth'
+
+import Add from 'fragments/Add'
+import Pick from 'fragments/Pick'
+import Detail from 'fragments/Detail'
+import Edit from 'fragments/Edit'
+import Shell from 'fragments/Shell'
+import Onboarding from 'fragments/Onboarding'
+import Setting from 'fragments/Setting'
 
 import { render } from 'react-dom'
 import { Router, Location } from '@reach/router'
-import { Detail, Edit, Shell, Onboarding, Setting } from './fragments'
 
 import * as serviceWorker from './serviceWorker'
 
@@ -27,17 +35,22 @@ const NavbarWithTitle = ({ path }) => {
   return <Navbar title={title} shouldUseBackIcon={shouldUseBackIcon} />
 }
 
+const ProtectedRoute = ({ Component, ...props }) =>
+  AuthHoc(() => <Component {...props} />)
+
 render(
   <>
     <Location>
       {({ location }) => <NavbarWithTitle path={location.pathname} />}
     </Location>
     <Router>
-      <Shell path='/' />
       <Onboarding path='/onboarding' />
-      <Setting path='/setting' />
-      <Detail path='/:subscription_id' />
-      <Edit path='/:subscription_id/edit' />
+      <ProtectedRoute Component={Shell} path='/' />
+      <ProtectedRoute Component={Add} path='/pick' />
+      <ProtectedRoute Component={Pick} path='/pick/:serviceName' />
+      <ProtectedRoute Component={Setting} path='/setting' />
+      <ProtectedRoute Component={Detail} path='/:subscriptionId' />
+      <ProtectedRoute Component={Edit} path='/:subscriptionId/edit' />
     </Router>
   </>,
   document.getElementById('app')

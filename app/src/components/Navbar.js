@@ -53,9 +53,13 @@ export default function ButtonAppBar({ title, shouldUseBackIcon }) {
   const [user, setUser] = useState({})
 
   useEffect(() => {
-    getUser(userId).then(user => {
-      setUser(user)
-    })
+    getUser(userId)
+      .then(user => {
+        setUser(user)
+      })
+      .catch(_ => {
+        setUser({ name: 'unauthorize' })
+      })
   }, [userId])
 
   const handleClick = () => {
@@ -93,6 +97,9 @@ export default function ButtonAppBar({ title, shouldUseBackIcon }) {
             <List>
               <ListItem button onClick={() => navigate('/')}>
                 <ListItemText primary='Subscription saya' />
+              </ListItem>
+              <ListItem button onClick={() => navigate('/onboarding')}>
+                <ListItemText primary='Tentang' />
               </ListItem>
               <ListItem button onClick={() => navigate('/setting')}>
                 <ListItemText>Pengaturan</ListItemText>

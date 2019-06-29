@@ -1,15 +1,11 @@
 import React from 'react'
-import Button from '@material-ui/core/Button'
-import Dialog from '@material-ui/core/Dialog'
-import Slide from '@material-ui/core/Slide'
-import MobileStepper from '@material-ui/core/MobileStepper'
-
 import { navigate } from '@reach/router'
+import { Button, Dialog, Slide, MobileStepper } from '@material-ui/core'
 import { checkLogin, registerUser } from '../services/user'
 
-import Welcome from '../assets/illustrations/welcome.png'
-import Money from '../assets/illustrations/money.png'
-import Love from '../assets/illustrations/love.png'
+import Welcome from 'assets/illustrations/welcome.png'
+import Money from 'assets/illustrations/money.png'
+import Love from 'assets/illustrations/love.png'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='up' ref={ref} {...props} />
@@ -47,12 +43,15 @@ export default function FullScreenDialog() {
     if (activeStep < 2) {
       setActiveStep(prevActiveStep => prevActiveStep + 1)
     } else {
-      return checkLogin().then(user => {
-        if (!user.total_rows) {
-          return registerUser().then(() => navigate('/'))
-        }
-        navigate('/')
-      })
+      return checkLogin()
+        .then(() => navigate('/'))
+        .catch(() => {
+          registerUser()
+            .then(() => navigate('/'))
+            .catch(err => {
+              console.log(err)
+            })
+        })
     }
   }
 
