@@ -30,7 +30,7 @@ fi
 if [[ $TRAVIS_BRANCH == "master" ]]; then
   APP_VER=$TRAVIS_TAG
 else
-  APP_VER=git rev-parse --short HEAD
+  APP_VER=$(git rev-parse --short HEAD)
 fi
 
 CHANGES=$(git --no-pager diff --name-only $COMMIT_RANGE)
