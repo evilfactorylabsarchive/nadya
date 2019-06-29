@@ -60,7 +60,7 @@ deploy_app() {
     ENV_TARGET=staging
   fi
   # deploy app to target environment
-  echo "> Deploying app with $ENV_TARGET environment..."
+  echo "> Deploying app with $ENV_TARGET environment using app version $REACT_APP_NADYA_VER..."
   cd app && now -e REACT_APP_NADYA_VER=$REACT_APP_NADYA_VER --target $ENV_TARGET --token=$NOW_TOKEN --scope evilfactory -A $NOW_FILE_NAME 
   cd ..
   APP_URL=$(curl "https://api.zeit.co/v4/now/deployments?teamId=$TEAM_ID&projectId=$PROJECT_APP_ID" -H "Authorization: Bearer $NOW_TOKEN" | jq -r '.deployments[0].url')
