@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import DayjsUtils from '@date-io/dayjs'
 import BackIcon from '@material-ui/icons/ArrowBack'
 
@@ -22,8 +22,12 @@ import {
   Select
 } from '@material-ui/core'
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
+import { navigate } from '@reach/router'
 import { makeStyles } from '@material-ui/core/styles'
 import { addSubscription } from 'services/subscription'
+
+import Subscriptions from '../assets/data.json'
+import { getUserIdFromLS } from 'services/user.js'
 
 const Transition = React.forwardRef((props, ref) => {
   return <Slide direction='left' ref={ref} {...props} />
@@ -49,15 +53,21 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function Pick({
-  handleTopLevelClose,
-  handleBack,
-  activeSubscription
-}) {
+export default ({ serviceName }) => {
   const classes = useStyles()
+  const [activeSubscription, setActiveSubscription] = useState({})
   const [cost, setCost] = useState('')
   const [costInterval, setCostInterval] = useState(0)
   const [startSubscription, setStartSubscription] = useState(new Date())
+
+  useEffect(() => {
+    const serviceId = serviceName.split('-')[0]
+    if (Subscriptions[serviceId]) {
+      setActiveSubscription(Subscriptions[serviceId])
+    } else {
+      navigate('/pick/', { replace: true })
+    }
+  }, [serviceName])
 
   const shouldButtonDisabled = () =>
     !cost || !costInterval || !startSubscription
@@ -68,28 +78,21 @@ export default function Pick({
       title: activeSubscription.title,
       period: costInterval,
       cost: cost,
+      owner: getUserIdFromLS(),
       firstBill: startSubscription
     })
-      .then(_ => handleTopLevelClose())
-      .catch(err => {
-        window.alert(err)
-        throw err
-      })
+      .then(_ => navigate('/'))
+      .catch(err => window.alert(err))
   }
 
   return (
-    <Dialog
-      fullScreen
-      open
-      onClose={handleBack}
-      TransitionComponent={Transition}
-    >
+    <Dialog fullScreen open TransitionComponent={Transition}>
       <AppBar className={classes.appBar}>
         <Toolbar>
           <IconButton
             edge='start'
             color='inherit'
-            onClick={handleBack}
+            onClick={() => navigate('/pick/')}
             aria-label='Close'
           >
             <BackIcon />
