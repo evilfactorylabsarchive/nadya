@@ -12,7 +12,7 @@ export function toCurrency(number) {
     currency: 'IDR',
     minimumFractionDigits: 0
   })
-  return formatter.format(number)
+  return formatter.format(number || 0)
 }
 
 export function getPeriod(number) {
@@ -31,5 +31,5 @@ export function getPeriod(number) {
       label: 'tahun'
     }
   ]
-  return period[number].label
+  return period[number].label || 'waktu'
 }
