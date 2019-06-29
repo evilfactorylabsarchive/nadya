@@ -38,8 +38,7 @@ CHANGES=$(git --no-pager diff --name-only $COMMIT_RANGE)
 deploy_web() {
   # deploy web to target environment
   echo "> Deploying web with $ENV_TARGET environment..."
-  cd ./web && now --target $ENV_TARGET --token=$NOW_TOKEN --scope evilfactory -e_NADYA_VER
-  REACT_APP="$REACT_APP_NADYA_VER"
+  cd ./web && now --target $ENV_TARGET --token=$NOW_TOKEN --scope evilfactory
   cd ..
   WEB_URL=$(curl "https://api.zeit.co/v4/now/deployments?teamId=$TEAM_ID&projectId=$PROJECT_WEB_ID" -H "Authorization: Bearer $NOW_TOKEN" | jq -r '.deployments[0].url')
   # comment to PR
@@ -62,7 +61,7 @@ deploy_app() {
   fi
   # deploy app to target environment
   echo "> Deploying app with $ENV_TARGET environment..."
-  cd app && now --target $ENV_TARGET --token=$NOW_TOKEN --scope evilfactory -A $NOW_FILE_NAME
+  cd app && now --target $ENV_TARGET --token=$NOW_TOKEN --scope evilfactory -A $NOW_FILE_NAME -e REACT_APP_NADYA_VER="$REACT_APP_NADYA_VER"
   cd ..
   APP_URL=$(curl "https://api.zeit.co/v4/now/deployments?teamId=$TEAM_ID&projectId=$PROJECT_APP_ID" -H "Authorization: Bearer $NOW_TOKEN" | jq -r '.deployments[0].url')
   # comment to PR
