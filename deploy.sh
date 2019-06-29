@@ -28,9 +28,9 @@ else
 fi
 
 if [[ $TRAVIS_BRANCH == "master" ]]; then
-  APP_VER=$TRAVIS_TAG
+  REACT_APP_NADYA_VER=$TRAVIS_TAG
 else
-  APP_VER=$(git rev-parse --short HEAD)
+  REACT_APP_NADYA_VER=$(git rev-parse --short HEAD)
 fi
 
 CHANGES=$(git --no-pager diff --name-only $COMMIT_RANGE)
@@ -38,7 +38,8 @@ CHANGES=$(git --no-pager diff --name-only $COMMIT_RANGE)
 deploy_web() {
   # deploy web to target environment
   echo "> Deploying web with $ENV_TARGET environment..."
-  cd ./web && now --target $ENV_TARGET --token=$NOW_TOKEN --scope evilfactory -e APP_VER="$APP_VER"
+  cd ./web && now --target $ENV_TARGET --token=$NOW_TOKEN --scope evilfactory -e_NADYA_VER
+  REACT_APP="$REACT_APP_NADYA_VER"
   cd ..
   WEB_URL=$(curl "https://api.zeit.co/v4/now/deployments?teamId=$TEAM_ID&projectId=$PROJECT_WEB_ID" -H "Authorization: Bearer $NOW_TOKEN" | jq -r '.deployments[0].url')
   # comment to PR
