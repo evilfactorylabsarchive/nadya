@@ -27,11 +27,11 @@ export async function getUser(userId) {
  * 3. update old data with the existing ones: [newData]
  * 4. assign the _rev to the newest "revision id"
  *
- * @params {Object} payload - required data for creating new subscription
- * @params {string} payload._id - an unique uuid-style text that refer to the data we want change
- * @params {string} payload._rev - a uuid-style text taken from the data we want change
- * @params {Date} payload.createdAt - an unix-style timestamp when this subscription being created
- * @params {string} payload.name - name of user title. e.g: Spotify
+ * @param {Object} payload - required data for creating new subscription
+ * @param {string} payload._id - an unique uuid-style text that refer to the data we want change
+ * @param {string} payload._rev - a uuid-style text taken from the data we want change
+ * @param {Date} payload.createdAt - an unix-style timestamp when this subscription being created
+ * @param {string} payload.name - name of user title. e.g: Spotify
  */
 export async function updateUser(payload) {
   const { _id, _rev, createdAt, name } = payload

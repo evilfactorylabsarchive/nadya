@@ -79,12 +79,12 @@ export async function listSubscription() {
 /**
  * Add new subscription data
  *
- * @params {Object} payload - required data for creating new subscriptio
- * @params {Date} payload.firstBill - an unix-style timestamp
- * @params {string} payload.title - service title. e.g: Spotify
- * @params {string|number} payload.period - the "interval". e.g: monthly
- * @params {number} payload.cost - cost "number" per period
- * @params {string} payload.owner - a userId string represent the "creator"
+ * @param {Object} payload - required data for creating new subscriptio
+ * @param {Date} payload.firstBill - an unix-style timestamp
+ * @param {string} payload.title - service title. e.g: Spotify
+ * @param {string|number} payload.period - the "interval". e.g: monthly
+ * @param {number} payload.cost - cost "number" per period
+ * @param {string} payload.owner - a userId string represent the "creator"
  * @return {Object} PromiseObject
  */
 export async function addSubscription(payload) {
@@ -117,15 +117,15 @@ export async function addSubscription(payload) {
  * 3. update old data with the existing ones: [newData]
  * 4. assign the _rev to the newest "revision id"
  *
- * @params {Object} payload - required data for creating new subscription
- * @params {string} payload._rev - a uuid-style text taken from the data we want change
- * @params {string} payload._id - an unique uuid-style text that refer to the data we want change
- * @params {string|number} payload.period - the "interval". e.g: monthly
- * @params {number} payload.cost - cost "number" per period
- * @params {string} payload.owner - a userId string represent the "creator"
- * @params {Date} payload.firstBill - an unix-style timestamp
- * @params {Date} payload.createdAt - an unix-style timestamp when this subscription being created
- * @params {string} payload.title - service title. e.g: Spotify
+ * @param {Object} payload - required data for creating new subscription
+ * @param {string} payload._rev - a uuid-style text taken from the data we want change
+ * @param {string} payload._id - an unique uuid-style text that refer to the data we want change
+ * @param {string|number} payload.period - the "interval". e.g: monthly
+ * @param {number} payload.cost - cost "number" per period
+ * @param {string} payload.owner - a userId string represent the "creator"
+ * @param {Date} payload.firstBill - an unix-style timestamp
+ * @param {Date} payload.createdAt - an unix-style timestamp when this subscription being created
+ * @param {string} payload.title - service title. e.g: Spotify
  * @return {Object} PromiseObject
  */
 export async function updateSubscription(payload) {
