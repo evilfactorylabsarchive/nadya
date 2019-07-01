@@ -1,6 +1,17 @@
-import { userDb } from '../db'
-import { USER_ID_FROM_LS } from '../constants'
+import db from '../db'
+import { USER_ID_FROM_LS, USER } from '../constants'
 import { generateUuid } from '../utils.js'
+import { handleNotFound } from 'services/helpers'
+
+/**
+ * Notes about handling error
+ *
+ * We expect there is *only* one error, and it should be 404
+ * Because when we query to "empty" id docs, PouchDB will mark
+ * it as a `Error`
+ *
+ * For all error except 404, we will mark it as our debt
+ */
 
 /**
  * Get existing user data
@@ -8,11 +19,13 @@ import { generateUuid } from '../utils.js'
  * @return {Object} PromiseObject
  */
 export async function getUser(userId) {
+  if (!userId) return Promise.reject('userId cannot empty')
+
   try {
-    const user = await userDb.get(userId)
+    const user = await db.get(userId)
     return user
   } catch (err) {
-    throw err
+    return handleNotFound(err)
   }
 }
 
@@ -35,18 +48,15 @@ export async function getUser(userId) {
  */
 export async function updateUser(payload) {
   const { _id, _rev, createdAt, name } = payload
-  try {
-    const updateUser = await userDb.put({
-      _id,
-      _rev,
-      createdAt,
-      name,
-      updatedAt: Date.now()
-    })
-    return updateUser
-  } catch (err) {
-    throw err
-  }
+  const updateUser = await db.put({
+    _id,
+    _rev,
+    createdAt,
+    name,
+    updatedAt: Date.now(),
+    type: USER
+  })
+  return updateUser
 }
 
 /**
@@ -68,12 +78,18 @@ export function getUserIdFromLS() {
  * @return {Object} PromiseObject
  */
 export async function checkLogin() {
-  const userId = getUserIdFromLS()
-  try {
-    const user = await userDb.get(userId)
-    return user
-  } catch (err) {
-    throw err
+  const user = await db.find({
+    selector: {
+      type: {
+        $eq: USER
+      }
+    },
+    fields: ['_id', 'type']
+  })
+  if (!user.docs.length) {
+    return Promise.reject('Unauthorized')
+  } else {
+    return user.docs
   }
 }
 
@@ -84,16 +100,13 @@ export async function checkLogin() {
  * @return {Object} PromiseObject
  */
 export async function registerUser() {
-  try {
-    const newUser = await userDb.put({
-      _id: generateUuid(),
-      name: null,
-      createdAt: Date.now(),
-      updatedAt: null
-    })
-    localStorage.setItem(USER_ID_FROM_LS, newUser.id)
-    return newUser
-  } catch (err) {
-    console.error(err)
-  }
+  const newUser = await db.put({
+    _id: generateUuid(),
+    name: null,
+    createdAt: Date.now(),
+    updatedAt: null,
+    type: USER
+  })
+  localStorage.setItem(USER_ID_FROM_LS, newUser.id)
+  return newUser
 }
