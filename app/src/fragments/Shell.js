@@ -7,16 +7,9 @@ import CardHeader from '@material-ui/core/CardHeader'
 import Avatar from '@material-ui/core/Avatar'
 import SimpleIcons from 'simple-icons-react-component'
 
-import AuthHOC from 'components/Auth'
-
-import {
-  listSubscription,
-  listenUpdate,
-  unlistenUpdate
-} from 'services/subscription'
-
 import { navigate } from '@reach/router'
 import { toCurrency } from 'utils'
+import { listSubscription } from 'services/subscription'
 
 const classes = {
   card: {
@@ -48,46 +41,26 @@ const classes = {
 }
 
 export default class App extends Component {
-  constructor(props) {
-    super(props)
-    this._listener = null
+  state = {
+    subscriptions: []
   }
 
-  state = {
-    isDialogOpen: false,
-    subscriptions: []
+  _navigate = subscriptionId => {
+    navigate(`/${subscriptionId}/`)
   }
 
   componentDidMount() {
     listSubscription()
-      .then(doc => {
-        this.setState({ subscriptions: doc.rows })
+      .then(docs => {
+        this.setState({ subscriptions: docs })
       })
       .catch(err => {
         throw err
       })
-
-    this._listener = listenUpdate(doc => {
-      this.setState({
-        subscriptions: [doc, ...this.state.subscriptions]
-      })
-    })
-  }
-
-  _handleDialogOpen = () => {
-    this.setState({ isDialogOpen: true })
-  }
-
-  _handleDialogClose = () => {
-    this.setState({ isDialogOpen: false })
-  }
-
-  componentWillUnmount() {
-    unlistenUpdate(this._listener)
   }
 
   render() {
-    return AuthHOC(() => (
+    return (
       <div className='App'>
         {!this.state.subscriptions.length && (
           <header style={classes.content}>
@@ -95,36 +68,34 @@ export default class App extends Component {
           </header>
         )}
         <div style={classes.container}>
-          {this.state.subscriptions
-            .filter(({ doc }) => Object.keys(doc).length !== 0)
-            .map(({ doc }) => (
-              <Card style={classes.card} key={doc._id}>
-                <CardActionArea onClick={() => navigate(`/${doc._id}/`)}>
-                  <CardHeader
-                    avatar={
-                      <Avatar
-                        style={{ backgroundColor: 'transparent' }}
-                        aria-label='Recipe'
-                        className={classes.avatar}
-                      >
-                        <SimpleIcons name={doc.title} />
-                      </Avatar>
-                    }
-                    title={doc.title}
-                    subheader={toCurrency(doc.cost)}
-                  />
-                </CardActionArea>
-              </Card>
-            ))}
+          {this.state.subscriptions.map(doc => (
+            <Card style={classes.card} key={doc._id} square={true}>
+              <CardActionArea onClick={this._navigate.bind(this, doc._id)}>
+                <CardHeader
+                  avatar={
+                    <Avatar
+                      style={{ backgroundColor: 'transparent' }}
+                      aria-label='Recipe'
+                      className={classes.avatar}
+                    >
+                      <SimpleIcons name={doc.title} />
+                    </Avatar>
+                  }
+                  title={doc.title}
+                  subheader={toCurrency(doc.cost)}
+                />
+              </CardActionArea>
+            </Card>
+          ))}
         </div>
         <Fab
-          onClick={() => navigate('/pick')}
+          onClick={this._navigate.bind(this, 'pick')}
           color='primary'
           style={classes.fab}
         >
           <AddIcon />
         </Fab>
       </div>
-    ))
+    )
   }
 }
