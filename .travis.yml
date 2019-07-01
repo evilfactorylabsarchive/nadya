@@ -10,8 +10,11 @@ branches:
 before_script:
   - yarn global add now
 
-install:
+before_install:
   - yarn global add codecov
+
+install:
+  - yarn
 
 script:
   - yarn workspace app test --coverage && codecov -p app/
