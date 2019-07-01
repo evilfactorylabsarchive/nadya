@@ -18,6 +18,7 @@ import MenuIcon from '@material-ui/icons/Menu'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
+import LogoType from '../assets/logotype.png'
 
 import { APP_VER } from '../constants'
 import { getUser, getUserIdFromLS } from 'services/user'
@@ -38,28 +39,29 @@ const useStyles = makeStyles(theme => ({
     color: '#fff',
     backgroundColor: deepOrange[500]
   },
-  menuButton: {
-    marginRight: theme.spacing(2)
-  },
   title: {
     flexGrow: 1
+  },
+  logoContainer: {
+    margin: 'auto',
+    paddingRight: theme.spacing(4)
+  },
+  logoType: {
+    float: 'left',
+    width: 160
   }
 }))
 
-export default function ButtonAppBar({ title, shouldUseBackIcon }) {
+export default ({ shouldUseBackIcon }) => {
   const classes = useStyles()
   const userId = getUserIdFromLS()
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [user, setUser] = useState({})
 
   useEffect(() => {
-    getUser(userId)
-      .then(user => {
-        setUser(user)
-      })
-      .catch(_ => {
-        setUser({ name: 'unauthorize' })
-      })
+    getUser(userId).then(user => {
+      setUser(user)
+    })
   }, [userId])
 
   const handleClick = () => {
@@ -124,16 +126,11 @@ export default function ButtonAppBar({ title, shouldUseBackIcon }) {
           >
             {shouldUseBackIcon ? <BackIcon /> : <MenuIcon />}
           </IconButton>
-          <Typography variant='h6' className={classes.title}>
-            {title}
-          </Typography>
+          <div className={classes.logoContainer}>
+            <img alt='nadya logo' className={classes.logoType} src={LogoType} />
+          </div>
         </Toolbar>
       </AppBar>
     </div>
   )
-}
-
-ButtonAppBar.defaultProps = {
-  title: 'Manage Subscriptions',
-  shouldUseBackIcon: false
 }
