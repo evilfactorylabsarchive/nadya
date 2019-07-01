@@ -48,7 +48,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='up' ref={ref} {...props} />
 })
 
-export default function FullScreenDialog({ handleClose, title }) {
+export default ({ handleClose, title }) => {
   const classes = useStyles()
   const [filter, setFilter] = useState('')
 
@@ -111,8 +111,4 @@ export default function FullScreenDialog({ handleClose, title }) {
       </List>
     </Dialog>
   )
-}
-
-FullScreenDialog.defaultProps = {
-  title: 'Tambahkan Subscription'
 }
