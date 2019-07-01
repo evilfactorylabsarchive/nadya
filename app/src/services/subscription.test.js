@@ -1,10 +1,28 @@
 import {
   addSubscription,
   listSubscription,
-  updateSubscription
+  updateSubscription,
+  getSubscription,
+  deleteSubscription
 } from 'services/subscription'
 
 describe('subscription service', () => {
+  it('should get empty subscription', async () => {
+    expect(await getSubscription('nope')).toEqual(0)
+  })
+
+  it('should get subscription', async () => {
+    const subscription = await addSubscription({
+      title: 'evilfactory',
+      cost: 666,
+      period: 0,
+      owner: 'everyone',
+      firstBill: new Date()
+    })
+    const actual = await getSubscription(subscription.id)
+    expect(actual).toBeTruthy()
+  })
+
   it('should add subscription', async () => {
     const actual = await addSubscription({
       title: 'evilfactory',
@@ -18,10 +36,22 @@ describe('subscription service', () => {
     expect(actual.id).toBeTruthy()
   })
 
-  it('should have subscriptions', async () => {
-    const subscription = await listSubscription()
+  it('should delete existing subscription', async () => {
+    const subscription = await addSubscription({
+      title: 'evilfactory',
+      cost: 666,
+      period: 0,
+      owner: 'everyone',
+      firstBill: new Date()
+    })
+    const actual = await deleteSubscription(subscription.id)
+    expect(actual.ok).toEqual(true)
+  })
 
-    expect(subscription.total_rows).not.toBe(0)
+  it('should list subscriptions', async () => {
+    const subscriptions = await listSubscription()
+
+    expect(subscriptions.length).not.toBe(0)
   })
 
   it('should update existing subscription', async () => {
