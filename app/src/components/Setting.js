@@ -16,6 +16,7 @@ import {
 
 import { deepOrange } from '@material-ui/core/colors'
 import { makeStyles } from '@material-ui/core/styles'
+import { deleteAllDatas } from 'services/internal'
 
 const useStyles = makeStyles(theme => ({
   avatar: {
@@ -33,11 +34,17 @@ const useStyles = makeStyles(theme => ({
     marginLeft: 'auto',
     marginRight: theme.spacing(1),
     marginBottom: theme.spacing(1)
+  },
+  button: {
+    marginTop: theme.spacing(2)
   }
 }))
 
+const Dialog = React.lazy(() => import('./Dialog'))
+
 export default ({ user, updateUser }) => {
   const classes = useStyles()
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [userName, setUserName] = useState('')
 
@@ -48,6 +55,22 @@ export default ({ user, updateUser }) => {
       })
       .catch(err => {
         throw err
+      })
+  }
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false)
+  }
+
+  const handleDeleteAllDatas = () => {
+    deleteAllDatas()
+      .then(deleted => {
+        if (deleted) {
+          window.location.href = '/'
+        }
+      })
+      .catch(err => {
+        window.alert('Ada kesalahan saat menghapus data', String(err))
       })
   }
 
@@ -91,6 +114,12 @@ export default ({ user, updateUser }) => {
             onChange={e => setUserName(e.target.value)}
             fullWidth={true}
           />
+          <Button
+            onClick={() => setIsDialogOpen(true)}
+            className={classes.button}
+          >
+            Hapus Semua Data
+          </Button>
         </CardContent>
         <CardActions>
           <Button
@@ -124,6 +153,20 @@ export default ({ user, updateUser }) => {
           </IconButton>
         ]}
       />
+      {isDialogOpen && (
+        <Dialog
+          title='Apakah kamu yakin?'
+          action='Hapus Data'
+          isDialogOpen={isDialogOpen}
+          handleAction={handleDeleteAllDatas}
+          handleClose={handleCloseDialog}
+        >
+          <p>
+            Dengan melakukan ini semua data termasuk pengguna dan subscriptions
+            kamu akan dihapus <strong>selamanya</strong>.
+          </p>
+        </Dialog>
+      )}
     </>
   )
 }

@@ -9,5 +9,6 @@ describe('Fragments: Setting.js', () => {
     const { container } = render(<Setting />)
 
     expect(container).toBeInTheDocument()
+    expect(container).toMatchSnapshot()
   })
 })

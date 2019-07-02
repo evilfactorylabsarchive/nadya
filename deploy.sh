@@ -30,7 +30,7 @@ fi
 if [[ $TRAVIS_BRANCH == "master" ]]; then
   REACT_APP_NADYA_VER=$TRAVIS_TAG
 else
-  REACT_APP_NADYA_VER=$(git rev-parse --short HEAD)
+  REACT_APP_NADYA_VER=$(echo $TRAVIS_PULL_REQUEST_SHA | cut -c 1-7)
 fi
 
 CHANGES=$(git --no-pager diff --name-only $COMMIT_RANGE)
@@ -40,11 +40,14 @@ deploy_web() {
   echo "> Deploying web with $ENV_TARGET environment..."
   cd ./web && now --target $ENV_TARGET --token=$NOW_TOKEN --scope evilfactory
   cd ..
-  WEB_URL=$(curl "https://api.zeit.co/v4/now/deployments?teamId=$TEAM_ID&projectId=$PROJECT_WEB_ID" -H "Authorization: Bearer $NOW_TOKEN" | jq -r '.deployments[0].url')
-  # comment to PR
-  curl -s -H "Authorization: token $GH_TOKEN" \
-    -X POST -d '{"body": "Current deployment URL: https://'$WEB_URL'"}' \
-    "https://api.github.com/repos/evilfactorylabs/nadya/issues/$TRAVIS_PULL_REQUEST/comments"
+
+  if [[ -n "$TRAVIS_PULL_REQUEST" ]]; then
+    WEB_URL=$(curl "https://api.zeit.co/v4/now/deployments?teamId=$TEAM_ID&projectId=$PROJECT_WEB_ID" -H "Authorization: Bearer $NOW_TOKEN" | jq -r '.deployments[0].url')
+    # comment to PR
+    curl -s -H "Authorization: token $GH_TOKEN" \
+      -X POST -d '{"body": "Current deployment URL: https://'$WEB_URL'"}' \
+      "https://api.github.com/repos/evilfactorylabs/nadya/issues/$TRAVIS_PULL_REQUEST/comments"
+  fi
 }
 
 deploy_app() {
@@ -61,13 +64,16 @@ deploy_app() {
   fi
   # deploy app to target environment
   echo "> Deploying app with $ENV_TARGET environment using app version $REACT_APP_NADYA_VER..."
-  cd app && now -e REACT_APP_NADYA_VER=$REACT_APP_NADYA_VER --target $ENV_TARGET --token=$NOW_TOKEN --scope evilfactory -A $NOW_FILE_NAME 
+  cd app && now -b REACT_APP_NADYA_VER=$REACT_APP_NADYA_VER --target $ENV_TARGET --token=$NOW_TOKEN --scope evilfactory -A $NOW_FILE_NAME 
   cd ..
-  APP_URL=$(curl "https://api.zeit.co/v4/now/deployments?teamId=$TEAM_ID&projectId=$PROJECT_APP_ID" -H "Authorization: Bearer $NOW_TOKEN" | jq -r '.deployments[0].url')
-  # comment to PR
-  curl -s -H "Authorization: token $GH_TOKEN" \
-    -X POST -d '{"body": "Current deployment URL: https://'$APP_URL'"}' \
-    "https://api.github.com/repos/evilfactorylabs/nadya/issues/$TRAVIS_PULL_REQUEST/comments"
+
+  if [[ -n "$TRAVIS_PULL_REQUEST" ]]; then
+    APP_URL=$(curl "https://api.zeit.co/v4/now/deployments?teamId=$TEAM_ID&projectId=$PROJECT_APP_ID" -H "Authorization: Bearer $NOW_TOKEN" | jq -r '.deployments[0].url')
+    # comment to PR
+    curl -s -H "Authorization: token $GH_TOKEN" \
+      -X POST -d '{"body": "Current deployment URL: https://'$APP_URL'"}' \
+      "https://api.github.com/repos/evilfactorylabs/nadya/issues/$TRAVIS_PULL_REQUEST/comments"
+  fi
 }
 
 [ -n "$(grep '^web' <<< "$CHANGES")" ] && deploy_web

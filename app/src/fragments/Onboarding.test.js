@@ -9,5 +9,6 @@ describe('Fragments: Onboarding.js', () => {
     const { container } = render(<Onboarding />)
 
     expect(container).toBeInTheDocument()
+    expect(container).toMatchSnapshot()
   })
 })

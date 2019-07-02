@@ -15,5 +15,6 @@ describe('Fragments: Setting.js', () => {
     )
 
     expect(container).toBeInTheDocument()
+    expect(container).toMatchSnapshot()
   })
 })

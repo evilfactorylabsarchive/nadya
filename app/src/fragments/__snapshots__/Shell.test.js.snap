@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Fragments: Shell.js should render without crash 1`] = `
+<div>
+  <div
+    class="App"
+  >
+    <header
+      style="padding: 2rem;"
+    >
+      <p>
+        I'm empty state
+      </p>
+    </header>
+    <div
+      style="max-height: 90vh; overflow-y: auto;"
+    />
+    <button
+      class="MuiButtonBase-root MuiFab-root MuiFab-primary"
+      style="position: fixed; bottom: 20px; right: 20px;"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiFab-label"
+      >
+        <svg
+          aria-hidden="true"
+          class="MuiSvgIcon-root"
+          focusable="false"
+          role="presentation"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
+          />
+          <path
+            d="M0 0h24v24H0z"
+            fill="none"
+          />
+        </svg>
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>
+  </div>
+</div>
+`;

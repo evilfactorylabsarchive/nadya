@@ -7,7 +7,7 @@ afterAll(async () => {
 describe('Fragments: Edit.js', () => {
   test('It should render Edit screen', () => {
     const updateSubscription = () => {}
-    const subscription = { title: 'Spotify' }
+    const subscription = { title: 'Spotify', firstBill: 1565370000000 }
     const { container } = render(
       <Edit
         updateSubscription={updateSubscription}
@@ -16,5 +16,6 @@ describe('Fragments: Edit.js', () => {
     )
 
     expect(container).toBeInTheDocument()
+    expect(container).toMatchSnapshot()
   })
 })

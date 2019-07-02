@@ -7,7 +7,8 @@ afterAll(async () => {
 describe('Fragments: Detail.js', () => {
   test('It should render Detail screen', () => {
     const subscription = {
-      title: 'Spotify'
+      title: 'Spotify',
+      firstBill: new Date(1565370000000)
     }
     const handleDelete = () => {}
     const { container } = render(
@@ -15,5 +16,6 @@ describe('Fragments: Detail.js', () => {
     )
 
     expect(container).toBeInTheDocument()
+    expect(container).toMatchSnapshot()
   })
 })

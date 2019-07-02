@@ -1,0 +1,209 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Fragments: Edit.js It should render Edit screen 1`] = `
+<div>
+  <div
+    class="MuiPaper-root MuiPaper-elevation1 MuiCard-root"
+  >
+    <div
+      class="MuiCardContent-root"
+    >
+      <div
+        class="MuiFormControl-root MuiFormControl-fullWidth"
+      >
+        <div
+          class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense"
+        >
+          <label
+            class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined Mui-disabled Mui-disabled MuiFormLabel-filled"
+            data-shrink="true"
+          >
+            Nama layanan
+          </label>
+          <div
+            class="MuiInputBase-root MuiOutlinedInput-root Mui-disabled Mui-disabled MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+          >
+            <fieldset
+              aria-hidden="true"
+              class="PrivateNotchedOutline-root-86 MuiOutlinedInput-notchedOutline"
+              style="padding-left: 8px;"
+            >
+              <legend
+                class="PrivateNotchedOutline-legend-87"
+                style="width: 0px;"
+              >
+                <span>
+                  ​
+                </span>
+              </legend>
+            </fieldset>
+            <input
+              aria-invalid="false"
+              class="MuiInputBase-input MuiOutlinedInput-input Mui-disabled Mui-disabled MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+              disabled=""
+              name="name"
+              type="text"
+              value="Spotify"
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiFormControl-root MuiFormControl-marginNormal MuiFormControl-fullWidth"
+      >
+        <div
+          class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense"
+        >
+          <label
+            class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-filled"
+            data-shrink="true"
+          >
+            Biaya
+          </label>
+          <div
+            class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense MuiInputBase-adornedStart MuiOutlinedInput-adornedStart"
+          >
+            <fieldset
+              aria-hidden="true"
+              class="PrivateNotchedOutline-root-86 MuiOutlinedInput-notchedOutline"
+              style="padding-left: 8px;"
+            >
+              <legend
+                class="PrivateNotchedOutline-legend-87"
+                style="width: 0px;"
+              >
+                <span>
+                  ​
+                </span>
+              </legend>
+            </fieldset>
+            <div
+              class="MuiInputAdornment-root MuiInputAdornment-positionStart"
+            >
+              <p
+                class="MuiTypography-root MuiTypography-body1 MuiTypography-colorTextSecondary"
+              >
+                Rp 
+              </p>
+            </div>
+            <input
+              aria-invalid="false"
+              class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense MuiInputBase-inputAdornedStart MuiOutlinedInput-inputAdornedStart"
+              name="cost"
+              type="number"
+              value="0"
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiFormControl-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      >
+        <label
+          class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-filled"
+          data-shrink="true"
+        >
+          Periode penagihan
+        </label>
+        <div
+          class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-formControl"
+        >
+          <fieldset
+            aria-hidden="true"
+            class="PrivateNotchedOutline-root-86 MuiOutlinedInput-notchedOutline"
+            style="padding-left: 8px;"
+          >
+            <legend
+              class="PrivateNotchedOutline-legend-87"
+              style="width: 120.5px;"
+            >
+              <span>
+                ​
+              </span>
+            </legend>
+          </fieldset>
+          <div
+            class="MuiSelect-root"
+          >
+            <div
+              aria-haspopup="true"
+              aria-pressed="false"
+              class="MuiSelect-select MuiSelect-selectMenu MuiInputBase-input MuiOutlinedInput-input MuiSelect-outlined"
+              role="button"
+              tabindex="0"
+            />
+            <input
+              type="hidden"
+              value="0"
+            />
+            <svg
+              aria-hidden="true"
+              class="MuiSvgIcon-root MuiSelect-icon"
+              focusable="false"
+              role="presentation"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M7 10l5 5 5-5z"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth"
+        format="MMMM Do"
+      >
+        <label
+          class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined MuiFormLabel-filled"
+          data-shrink="true"
+        >
+          Tanggal pertama berlangganan
+        </label>
+        <div
+          class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl"
+        >
+          <fieldset
+            aria-hidden="true"
+            class="PrivateNotchedOutline-root-86 MuiOutlinedInput-notchedOutline"
+            style="padding-left: 8px;"
+          >
+            <legend
+              class="PrivateNotchedOutline-legend-87"
+              style="width: 0px;"
+            >
+              <span>
+                ​
+              </span>
+            </legend>
+          </fieldset>
+          <input
+            aria-invalid="false"
+            class="MuiInputBase-input MuiOutlinedInput-input"
+            readonly=""
+            type="text"
+            value="August 10th"
+          />
+        </div>
+        
+      </div>
+    </div>
+    <div
+      class="MuiCardActions-root MuiCardActions-spacing"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root makeStyles-action-2 MuiButton-contained MuiButton-containedPrimary Mui-disabled Mui-disabled"
+        disabled=""
+        tabindex="-1"
+        type="button"
+      >
+        <span
+          class="MuiButton-label"
+        >
+          Simpan
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;

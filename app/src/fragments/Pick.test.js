@@ -9,5 +9,6 @@ describe('Fragments: Pick.js', () => {
     const { container } = render(<Pick serviceName='666-evilfactory' />)
 
     expect(container).toBeInTheDocument()
+    expect(container).toMatchSnapshot()
   })
 })
