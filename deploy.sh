@@ -30,7 +30,7 @@ fi
 if [[ $TRAVIS_BRANCH == "master" ]]; then
   REACT_APP_NADYA_VER=$TRAVIS_TAG
 else
-  REACT_APP_NADYA_VER=$(git rev-parse --short HEAD)
+  REACT_APP_NADYA_VER=$(echo $TRAVIS_PULL_REQUEST_SHA | cut -c 1-7)
 fi
 
 CHANGES=$(git --no-pager diff --name-only $COMMIT_RANGE)
