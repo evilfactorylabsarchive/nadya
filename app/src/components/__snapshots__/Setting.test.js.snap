@@ -31,11 +31,11 @@ exports[`Fragments: Setting.js It should render Setting screen 1`] = `
         >
           <fieldset
             aria-hidden="true"
-            class="PrivateNotchedOutline-root-193 MuiOutlinedInput-notchedOutline"
+            class="PrivateNotchedOutline-root-194 MuiOutlinedInput-notchedOutline"
             style="padding-left: 8px;"
           >
             <legend
-              class="PrivateNotchedOutline-legend-194"
+              class="PrivateNotchedOutline-legend-195"
               style="width: 0px;"
             >
               <span>
@@ -66,11 +66,11 @@ exports[`Fragments: Setting.js It should render Setting screen 1`] = `
         >
           <fieldset
             aria-hidden="true"
-            class="PrivateNotchedOutline-root-193 MuiOutlinedInput-notchedOutline"
+            class="PrivateNotchedOutline-root-194 MuiOutlinedInput-notchedOutline"
             style="padding-left: 8px;"
           >
             <legend
-              class="PrivateNotchedOutline-legend-194"
+              class="PrivateNotchedOutline-legend-195"
               style="width: 0px;"
             >
               <span>
@@ -101,11 +101,11 @@ exports[`Fragments: Setting.js It should render Setting screen 1`] = `
         >
           <fieldset
             aria-hidden="true"
-            class="PrivateNotchedOutline-root-193 MuiOutlinedInput-notchedOutline"
+            class="PrivateNotchedOutline-root-194 MuiOutlinedInput-notchedOutline"
             style="padding-left: 8px;"
           >
             <legend
-              class="PrivateNotchedOutline-legend-194"
+              class="PrivateNotchedOutline-legend-195"
               style="width: 0.01px;"
             >
               <span>
@@ -121,6 +121,20 @@ exports[`Fragments: Setting.js It should render Setting screen 1`] = `
           />
         </div>
       </div>
+      <button
+        class="MuiButtonBase-root MuiButton-root makeStyles-button-4 MuiButton-text"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          class="MuiButton-label"
+        >
+          Hapus Semua Data
+        </span>
+        <span
+          class="MuiTouchRipple-root"
+        />
+      </button>
     </div>
     <div
       class="MuiCardActions-root MuiCardActions-spacing"
