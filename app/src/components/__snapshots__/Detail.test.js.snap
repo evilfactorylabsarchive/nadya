@@ -86,7 +86,6 @@ exports[`Fragments: Detail.js It should render Detail screen 1`] = `
         10 August 2019
       </p>
     </div>
-    <div />
   </div>
 </div>
 `;

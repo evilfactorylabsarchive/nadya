@@ -8,13 +8,7 @@ import {
   Menu,
   MenuItem,
   CardHeader,
-  IconButton,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle
+  IconButton
 } from '@material-ui/core'
 
 import MoreVertIcon from '@material-ui/icons/MoreVert'
@@ -38,29 +32,7 @@ const useStyles = makeStyles({
   }
 })
 
-const AlertDialog = ({
-  isDialogOpen,
-  handleClose,
-  subscriptionTitle,
-  handleDelete
-}) => (
-  <div>
-    <Dialog open={isDialogOpen} onClose={handleClose}>
-      <DialogTitle>Hapus {subscriptionTitle}?</DialogTitle>
-      <DialogContent>
-        <DialogContentText id='alert-dialog-description'>
-          Apakah kamu yakin ingin menghapus subscription ini?
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose} color='primary' autoFocus>
-          Kembali
-        </Button>
-        <Button onClick={handleDelete}>Hapus</Button>
-      </DialogActions>
-    </Dialog>
-  </div>
-)
+const Dialog = React.lazy(() => import('./Dialog'))
 
 export default ({ subscription, handleDelete }) => {
   const classes = useStyles()
@@ -112,13 +84,17 @@ export default ({ subscription, handleDelete }) => {
           Sejak {dayjs(subscription.firstBill).format('DD MMMM YYYY')}
         </Typography>
       </CardContent>
-      <AlertDialog
-        subscriptionId={subscription._id}
-        subscriptionTitle={subscription.title}
-        handleDelete={handleDelete}
-        handleClose={handleCloseDialog}
-        isDialogOpen={isDialogOpen}
-      />
+      {isDialogOpen && (
+        <Dialog
+          title={`Hapus ${subscription.title}?`}
+          action='Hapus'
+          isDialogOpen={isDialogOpen}
+          handleAction={handleDelete}
+          handleClose={handleCloseDialog}
+        >
+          Apakah kamu yakin ingin menghapus subscription ini?
+        </Dialog>
+      )}
     </Card>
   )
 }
