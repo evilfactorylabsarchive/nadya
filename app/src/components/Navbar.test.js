@@ -9,5 +9,6 @@ describe('Fragments: Navbar.js', () => {
     const { container } = render(<Navbar />)
 
     expect(container).toBeInTheDocument()
+    expect(container).toMatchSnapshot()
   })
 })

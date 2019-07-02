@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Fragments: Add.js It should render Add screen 1`] = `
+<div
+  aria-hidden="true"
+/>
+`;

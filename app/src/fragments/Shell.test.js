@@ -17,6 +17,7 @@ describe('Fragments: Shell.js', () => {
   it('should render without crash', () => {
     const { container } = render(<Shell />)
     expect(container).toBeInTheDocument()
+    expect(container).toMatchSnapshot()
   })
 
   it('should show empty state screen', async () => {

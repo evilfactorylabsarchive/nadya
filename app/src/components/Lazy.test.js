@@ -9,5 +9,6 @@ describe('Fragments: Lazy.js', () => {
     const { container } = render(<LazyNavbar component='./Navbar' />)
 
     expect(container).toBeInTheDocument()
+    expect(container).toMatchSnapshot()
   })
 })

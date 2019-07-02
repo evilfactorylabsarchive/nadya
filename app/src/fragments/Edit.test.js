@@ -9,5 +9,6 @@ describe('Fragments: Edit.js', () => {
     const { container } = render(<Edit />)
 
     expect(container).toBeInTheDocument()
+    expect(container).toMatchSnapshot()
   })
 })

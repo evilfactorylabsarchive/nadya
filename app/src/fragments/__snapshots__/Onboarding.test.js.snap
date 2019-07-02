@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Fragments: Onboarding.js It should render Onboarding screen 1`] = `
+<div
+  aria-hidden="true"
+>
+  <div>
+    <div />
+  </div>
+</div>
+`;

@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Fragments: Detail.js It should render Detail screen 1`] = `
+<div>
+  <div
+    class="MuiPaper-root MuiPaper-elevation0 MuiCard-root makeStyles-card-1 MuiPaper-rounded"
+  >
+    <div
+      class="MuiCardHeader-root"
+    >
+      <div
+        class="MuiCardHeader-content"
+      />
+      <div
+        class="MuiCardHeader-action"
+      >
+        <button
+          aria-label="Settings"
+          class="MuiButtonBase-root MuiIconButton-root"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiIconButton-label"
+          >
+            <svg
+              aria-hidden="true"
+              class="MuiSvgIcon-root"
+              focusable="false"
+              role="presentation"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M0 0h24v24H0z"
+                fill="none"
+              />
+              <path
+                d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"
+              />
+            </svg>
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+      </div>
+    </div>
+    <div
+      class="MuiCardContent-root"
+    >
+      <div
+        class="makeStyles-imageContainer-2"
+      />
+      <h4
+        class="MuiTypography-root makeStyles-pos-3 MuiTypography-h4"
+      />
+      <p
+        class="MuiTypography-root MuiTypography-body1"
+      >
+        IDR 0
+        /
+      </p>
+      <p
+        class="MuiTypography-root MuiTypography-body2"
+      >
+        Sejak 
+        02 July 2019
+      </p>
+    </div>
+    <div />
+  </div>
+</div>
+`;

@@ -18,5 +18,6 @@ describe('Fragments: Pick.js', () => {
     )
 
     expect(container).toBeInTheDocument()
+    expect(container).toMatchSnapshot()
   })
 })
