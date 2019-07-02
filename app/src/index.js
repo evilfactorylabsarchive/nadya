@@ -10,7 +10,7 @@ import Onboarding from 'fragments/Onboarding'
 import Setting from 'fragments/Setting'
 
 import { render } from 'react-dom'
-import { Router } from '@reach/router'
+import { Router, Location } from '@reach/router'
 
 import UserContext from 'contexts/UserContext'
 import ProtectedRoute from './components/AuthHOC'
@@ -30,7 +30,11 @@ class App extends React.Component {
   render() {
     return (
       <UserContext.Provider value={this.state}>
-        {this.state.userId && <Navbar />}
+        {this.state.userId && (
+          <Location>
+            {({ location }) => <Navbar path={location.pathname} />}
+          </Location>
+        )}
         <Router>
           <Onboarding path='/onboarding' />
           <ProtectedRoute Component={Shell} path='/' />

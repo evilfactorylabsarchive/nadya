@@ -80,7 +80,7 @@ export default ({ handleClose, title }) => {
             <CloseIcon />
           </IconButton>
           <Typography variant='h6' className={classes.title}>
-            {title}
+            Tambahkan Subscription
           </Typography>
         </Toolbar>
       </AppBar>

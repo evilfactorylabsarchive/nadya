@@ -52,9 +52,11 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default ({ shouldUseBackIcon }) => {
+export default ({ path = '/' }) => {
   const classes = useStyles()
   const userId = getUserIdFromLS()
+
+  const [shouldUseBackIcon, setShouldUseBackButton] = useState(false)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [user, setUser] = useState({})
 
@@ -62,7 +64,9 @@ export default ({ shouldUseBackIcon }) => {
     getUser(userId).then(user => {
       setUser(user)
     })
-  }, [userId])
+
+    setShouldUseBackButton(path !== '/')
+  }, [userId, path])
 
   const handleClick = () => {
     if (shouldUseBackIcon) {
