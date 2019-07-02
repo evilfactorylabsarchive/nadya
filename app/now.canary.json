@@ -20,9 +20,9 @@
     { "src": "/manifest.json", "dest": "/manifest.json" },
     { "src": "/precache-manifest.(.*)", "dest": "/precache-manifest.$1" },
     {
-      "src": "/service-worker.js",
+      "src": "sw.js",
       "headers": { "cache-control": "s-maxage=0" },
-      "dest": "/service-worker.js"
+      "dest": "sw.js"
     },
     {
       "src": "/(.*)",
