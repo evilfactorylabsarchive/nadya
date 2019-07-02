@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react'
 import LinearProgress from '@material-ui/core/LinearProgress'
 
-function Loading() {
+export function Loading() {
   return (
     <LinearProgress
       style={{

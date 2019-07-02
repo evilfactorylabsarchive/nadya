@@ -1,16 +1,19 @@
-import React from 'react'
+/* eslint-disable import/first */
+
+import React, { Suspense, lazy } from 'react'
 import Navbar from 'components/Navbar'
 
-import Add from 'fragments/Add'
-import Pick from 'fragments/Pick'
-import Detail from 'fragments/Detail'
-import Edit from 'fragments/Edit'
-import Shell from 'fragments/Shell'
-import Onboarding from 'fragments/Onboarding'
-import Setting from 'fragments/Setting'
+const Add = lazy(() => import('./fragments/Add'))
+const Pick = lazy(() => import('./fragments/Pick'))
+const Detail = lazy(() => import('./fragments/Detail'))
+const Edit = lazy(() => import('./fragments/Edit'))
+const Shell = lazy(() => import('./fragments/Shell'))
+const Onboarding = lazy(() => import('./fragments/Onboarding'))
+const Setting = lazy(() => import('./fragments/Setting'))
 
 import { render } from 'react-dom'
 import { Router, Location } from '@reach/router'
+import { Loading } from 'components/Lazy'
 
 import UserContext from 'contexts/UserContext'
 import ProtectedRoute from './components/AuthHOC'
@@ -35,15 +38,17 @@ class App extends React.Component {
             {({ location }) => <Navbar path={location.pathname} />}
           </Location>
         )}
-        <Router>
-          <Onboarding path='/onboarding' />
-          <ProtectedRoute Component={Shell} path='/' />
-          <ProtectedRoute Component={Add} path='/pick' />
-          <ProtectedRoute Component={Pick} path='/pick/:serviceName' />
-          <ProtectedRoute Component={Setting} path='/setting' />
-          <ProtectedRoute Component={Detail} path='/:subscriptionId' />
-          <ProtectedRoute Component={Edit} path='/:subscriptionId/edit' />
-        </Router>
+        <Suspense fallback={<Loading />}>
+          <Router>
+            <Onboarding path='/onboarding' />
+            <ProtectedRoute Component={Shell} path='/' />
+            <ProtectedRoute Component={Add} path='/pick' />
+            <ProtectedRoute Component={Pick} path='/pick/:serviceName' />
+            <ProtectedRoute Component={Setting} path='/setting' />
+            <ProtectedRoute Component={Detail} path='/:subscriptionId' />
+            <ProtectedRoute Component={Edit} path='/:subscriptionId/edit' />
+          </Router>
+        </Suspense>
       </UserContext.Provider>
     )
   }
