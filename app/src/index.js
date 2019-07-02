@@ -1,11 +1,11 @@
 import React, { Suspense, lazy } from 'react'
-import Navbar from 'components/Navbar'
+import Navbar from './components/Navbar'
 
 import { render } from 'react-dom'
 import { Router, Location } from '@reach/router'
-import { Loading } from 'components/Lazy'
+import { LinearProgress } from '@material-ui/core'
 
-import UserContext from 'contexts/UserContext'
+import UserContext from './contexts/UserContext'
 import ProtectedRoute from './components/AuthHOC'
 
 import * as serviceWorker from './serviceWorker'
@@ -19,6 +19,17 @@ const Edit = lazy(() => import('./fragments/Edit'))
 const Shell = lazy(() => import('./fragments/Shell'))
 const Onboarding = lazy(() => import('./fragments/Onboarding'))
 const Setting = lazy(() => import('./fragments/Setting'))
+
+const Loading = () => (
+  <LinearProgress
+    style={{
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%'
+    }}
+  />
+)
 
 class App extends React.Component {
   state = {
