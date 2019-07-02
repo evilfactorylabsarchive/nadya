@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
   },
   logoType: {
     float: 'left',
-    width: 160
+    width: 120
   }
 }))
 
