@@ -2,13 +2,22 @@ language: node_js
 node_js:
   - "node"
 cache: yarn
+branches:
+  only:
+    - canary
+    - master
 
 before_script:
   - yarn global add now
 
-install: true
+before_install:
+  - yarn global add codecov
 
-script: "true"
+install:
+  - yarn
+
+script:
+  - yarn workspace app test --coverage && codecov -p app/
 
 after_script:
   - bash ./deploy.sh

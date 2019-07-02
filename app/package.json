@@ -10,6 +10,7 @@
     "@reach/router": "^1.2.1",
     "dayjs": "^1.8.14",
     "pouchdb": "^7.1.1",
+    "pouchdb-find": "^7.1.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1",
@@ -17,8 +18,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
-    "now-build": "react-scripts build",
+    "clean-cra-sw": "rm -f build/precache-manifest.*.js && rm -f build/service-worker.js",
+    "build": "react-scripts build && npm run build-sw && npm run clean-cra-sw",
+    "build-sw": "node ./src/sw/builder.js",
+    "now-build": "react-scripts build && npm run build-sw && npm run clean-cra-sw",
     "now-dev": "react-scripts start",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -39,8 +42,10 @@
     ]
   },
   "devDependencies": {
+    "@react-mock/state": "^0.1.8",
     "@testing-library/react": "8.0.1",
     "jest-dom": "3.5.0",
-    "pouchdb-adapter-memory": "^7.1.1"
+    "pouchdb-adapter-memory": "^7.1.1",
+    "workbox-build": "^4.3.1"
   }
 }

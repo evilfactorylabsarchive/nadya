@@ -1,6 +1,19 @@
-import { checkLogin, registerUser, getUser, updateUser } from './user'
+import {
+  checkLogin,
+  registerUser,
+  getUser,
+  updateUser,
+  getUserIdFromLS
+} from './user'
+
+import { USER_ID_FROM_LS } from '../constants'
 
 describe('user service', () => {
+  it('should check invalid login', async () => {
+    localStorage.removeItem(USER_ID_FROM_LS)
+    await expect(checkLogin()).rejects.toEqual('Unauthorized')
+  })
+
   it('should check a valid login', async () => {
     const actual = await registerUser()
     const expected = await checkLogin()
@@ -13,6 +26,12 @@ describe('user service', () => {
     const actual = await getUser(expected.id)
 
     expect(actual.id).toEqual(expected._id)
+  })
+
+  it('should get empty user', async () => {
+    const user = await getUser('3v1lf4ct0ry')
+
+    expect(user).toEqual(0)
   })
 
   it('should update user', async () => {
@@ -28,6 +47,10 @@ describe('user service', () => {
 
     expect(update.ok).toEqual(true)
     expect(actual.name).toEqual('evilfactory')
+  })
+
+  it('should get user id', () => {
+    expect(getUserIdFromLS()).toBeTruthy()
   })
 
   it('should register new user', async () => {

@@ -1,32 +1,17 @@
 import db from '../db'
 import { generateUuid } from '../utils'
+import { SUBSCRIPTIONS } from '../constants'
+import { handleNotFound } from 'services/helpers'
 
 /**
- * Create "delegator" for listening db update changes
+ * Notes about handling error
  *
- * @param {Function} cb - callback that fired when there are db changes
- * @return {EventEmitter} - listener instance
- */
-export function listenUpdate(cb) {
-  const listener = db
-    .changes({
-      since: 'now',
-      live: true,
-      include_docs: true
-    })
-    .on('change', change => cb(change))
-    .on('error', _ => listener.cancel())
-  return listener
-}
-
-/**
- * Delete the "instance" that listening to db changes
+ * We expect there is *only* one error, and it should be 404
+ * Because when we query to "empty" id docs, PouchDB will mark
+ * it as a `Error`
  *
- * @return {void}
+ * For all error except 404, we will mark it as our debt
  */
-export function unlistenUpdate(listenerInstance) {
-  listenerInstance.cancel()
-}
 
 /**
  * Delete existing subscription data
@@ -35,13 +20,9 @@ export function unlistenUpdate(listenerInstance) {
  * @return {Object} PromiseObject
  */
 export async function deleteSubscription(subscriptionId) {
-  try {
-    const doc = await db.get(subscriptionId)
-    const deleteSubscription = await db.remove(doc._id, doc._rev)
-    return deleteSubscription
-  } catch (err) {
-    throw err
-  }
+  const doc = await db.get(subscriptionId)
+  const deleteSubscription = await db.remove(doc._id, doc._rev)
+  return deleteSubscription
 }
 
 /**
@@ -55,7 +36,7 @@ export async function getSubscription(subscriptionId) {
     const subscription = await db.get(subscriptionId)
     return subscription
   } catch (err) {
-    throw err
+    return handleNotFound(err)
   }
 }
 
@@ -65,15 +46,14 @@ export async function getSubscription(subscriptionId) {
  * @return {Object} PromiseObject
  */
 export async function listSubscription() {
-  try {
-    const subscriptions = await db.allDocs({
-      include_docs: true,
-      descending: true
-    })
-    return subscriptions
-  } catch (err) {
-    throw err
-  }
+  const subscriptions = await db.find({
+    selector: {
+      type: {
+        $eq: SUBSCRIPTIONS
+      }
+    }
+  })
+  return subscriptions.docs
 }
 
 /**
@@ -89,21 +69,18 @@ export async function listSubscription() {
  */
 export async function addSubscription(payload) {
   const { firstBill, title, period, cost, owner } = payload
-  try {
-    const addSubscription = await db.put({
-      _id: generateUuid(),
-      title,
-      period,
-      cost,
-      owner,
-      firstBill: new Date(firstBill).getTime(),
-      createdAt: Date.now(),
-      updatedAt: null
-    })
-    return addSubscription
-  } catch (err) {
-    throw err
-  }
+  const addSubscription = await db.put({
+    _id: generateUuid(),
+    title,
+    period,
+    cost,
+    owner,
+    firstBill: new Date(firstBill).getTime(),
+    createdAt: Date.now(),
+    updatedAt: null,
+    type: SUBSCRIPTIONS
+  })
+  return addSubscription
 }
 
 /**
@@ -139,20 +116,17 @@ export async function updateSubscription(payload) {
     createdAt,
     title
   } = payload
-  try {
-    const updateSubscription = await db.put({
-      _id,
-      _rev,
-      period,
-      title,
-      cost,
-      owner,
-      firstBill,
-      createdAt,
-      updatedAt: Date.now()
-    })
-    return updateSubscription
-  } catch (err) {
-    throw err
-  }
+  const updateSubscription = await db.put({
+    _id,
+    _rev,
+    period,
+    title,
+    cost,
+    owner,
+    firstBill,
+    createdAt,
+    updatedAt: Date.now(),
+    type: SUBSCRIPTIONS
+  })
+  return updateSubscription
 }
