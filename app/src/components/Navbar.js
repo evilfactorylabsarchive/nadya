@@ -56,32 +56,62 @@ export default ({ path = '/' }) => {
   const classes = useStyles()
   const userId = getUserIdFromLS()
 
+  const [a2hsDelegator, setA2hsDelegator] = useState({})
+  const [appInstalled, setAppInstalled] = useState(true)
   const [shouldUseBackIcon, setShouldUseBackButton] = useState(false)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [user, setUser] = useState({})
 
+  const checkIsInstalled = () => {
+    setAppInstalled(true)
+    window.localStorage.setItem(A2HS_IDENTIFIER, true)
+  }
+
+  const handleInstall = event => {
+    event.preventDefault()
+    setA2hsDelegator(event)
+  }
+
+  const addToHomeScreen = () => {
+    a2hsDelegator.prompt()
+    a2hsDelegator.userChoice.then(result => {
+      if (result.outcome !== 'accepted') {
+        console.log('Installed')
+      }
+    })
+  }
+
   useEffect(() => {
+    const isAppInstalled = window.localStorage.getItem(A2HS_IDENTIFIER)
+
     getUser(userId).then(user => {
       setUser(user)
     })
 
     setShouldUseBackButton(path !== '/')
-  }, [userId, path])
 
-  const handleInstall = () => {
-    let a2hs = window.localStorage.getItem(A2HS_IDENTIFIER)
-    if (a2hs) {
-      a2hs.prompt()
-      a2hs.userChoice.then(result => {
-        if (result.outcome === 'accepted') {
-          window.alert('ok')
-        } else {
-          window.alert('hmm')
+    if (navigator.serviceWorker.controller) {
+      navigator.serviceWorker.ready.then(_ => {
+        if (!isAppInstalled) {
+          setAppInstalled(false)
         }
-        a2hs = null
       })
     }
-  }
+
+    if (!isAppInstalled) {
+      window.addEventListener('appinstalled', checkIsInstalled)
+      window.addEventListener('beforeinstallprompt', handleInstall)
+    } else {
+      setAppInstalled(true)
+    }
+
+    return function cleanup() {
+      if (!isAppInstalled) {
+        window.removeEventListener('appinstalled', checkIsInstalled)
+        window.removeEventListener('beforeinstallprompt', handleInstall)
+      }
+    }
+  }, [userId, path])
 
   const handleClick = () => {
     if (shouldUseBackIcon) {
@@ -125,9 +155,11 @@ export default ({ path = '/' }) => {
               <ListItem button onClick={() => navigate('/setting')}>
                 <ListItemText>Pengaturan</ListItemText>
               </ListItem>
-              <ListItem button onClick={handleInstall}>
-                <ListItemText>Install Aplikasi</ListItemText>
-              </ListItem>
+              {!appInstalled && (
+                <ListItem button onClick={addToHomeScreen}>
+                  <ListItemText>Install Aplikasi</ListItemText>
+                </ListItem>
+              )}
             </List>
             <Typography
               variant='body2'
