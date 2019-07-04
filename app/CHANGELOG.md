@@ -9,6 +9,7 @@
 
 - Fix typo in `manifest.json`
 - Fix typo in `CHANGELOG.md`
+- Fix `/images` route registration
 
 ## 1.0.0-canary.1 - 2019-07-02
 
