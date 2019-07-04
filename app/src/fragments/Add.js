@@ -48,7 +48,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='up' ref={ref} {...props} />
 })
 
-export default ({ handleClose, title }) => {
+export default ({ handleClose }) => {
   const classes = useStyles()
   const [filter, setFilter] = useState('')
 
@@ -58,8 +58,8 @@ export default ({ handleClose, title }) => {
       subscription.title.toLowerCase().includes(filter.toLowerCase())
   )
 
-  const pick = (index, subscription) => {
-    navigate(`/pick/${index}-${subscription.id}/`)
+  const pick = subscription => {
+    navigate(`/pick/${subscription.index}-${subscription.id}/`)
   }
 
   return (
@@ -93,11 +93,11 @@ export default ({ handleClose, title }) => {
         onChange={input => setFilter(input.target.value)}
       />
       <List component='nav' className={classes.list}>
-        {subscriptions.map((subscription, index) => (
+        {subscriptions.map(subscription => (
           <ListItem
             button
             key={subscription.id}
-            onClick={() => pick(index, subscription)}
+            onClick={() => pick(subscription)}
           >
             <ListItemIcon className={classes.icon}>
               <SimpleIcons name={subscription.title} />
