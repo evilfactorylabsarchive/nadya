@@ -4,9 +4,11 @@
 
 - Add ability to add to homescreen
 - Add icon to notification
+- Add functionality to see total bill per-period
 
 ### Patches
 
+- Fix wrong `index` item on `Add.js`
 - Fix typo in `manifest.json`
 - Fix typo in `CHANGELOG.md`
 - Fix `/images` route registration
