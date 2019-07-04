@@ -1,60 +1,72 @@
 [
   {
+    "index": 0,
     "id": "amazon-aws",
     "title": "Amazon AWS",
     "url": "https://aws.amazon.com"
   },
   {
+    "index": 1,
     "id": "asana",
     "title": "Asana",
     "url": "https://asana.com"
   },
   {
+    "index": 2,
     "id": "basecamp",
     "title": "Basecamp",
     "url": "https://basecamp.com"
   },
   {
+    "index": 3,
     "id": "bitbucket",
     "title": "Bitbucket",
     "url": "https://www.bitbucket.org"
   },
   {
+    "index": 4,
     "id": "buffer",
     "title": "Buffer",
     "url": "https://buffer.com"
   },
   {
+    "index": 5,
     "id": "campaign-monitor",
     "title": "Campaign Monitor",
     "url": "https://campaignmonitor.com"
   },
   {
+    "index": 6,
     "id": "circle-ci",
     "title": "CircleCI",
     "url": "https://circle-ci.com"
   },
   {
+    "index": 7,
     "id": "cloudflare",
     "title": "Cloudflare",
     "url": "https://cloudflare.com"
   },
   {
+    "index": 8,
     "id": "digital-ocean",
     "title": "DigitalOcean",
     "url": "https://www.digitalocean.com"
   },
   {
+    "index": 9,
     "id": "jira",
     "title": "Jira",
     "url": "https://atlassian.com/jira"
   },
   {
+    "index": 10,
     "id": "netflix",
     "title": "Netflix",
     "url": "https://www.netflix"
   },
   {
+    "index": 11,
     "id": "spotify",
     "title": "Spotify",
     "url": "https://www.spotify.com"

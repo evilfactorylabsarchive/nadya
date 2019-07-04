@@ -1,10 +1,11 @@
 {
   "name": "Nadya",
+  "short_name": "Nadya",
   "theme_color": "#2c387e",
   "background_color": "#ffffff",
   "display": "standalone",
   "orientation": "portrait",
-  "Scope": "/",
+  "scope": "/",
   "start_url": "/",
   "icons": [
     {
