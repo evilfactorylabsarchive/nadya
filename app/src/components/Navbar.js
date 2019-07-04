@@ -20,7 +20,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import LogoType from '../assets/logotype.png'
 
-import { APP_VER } from '../constants'
+import { APP_VER, A2HS_IDENTIFIER } from '../constants'
 import { getUser, getUserIdFromLS } from 'services/user'
 
 const useStyles = makeStyles(theme => ({
@@ -68,6 +68,21 @@ export default ({ path = '/' }) => {
     setShouldUseBackButton(path !== '/')
   }, [userId, path])
 
+  const handleInstall = () => {
+    let a2hs = window.localStorage.getItem(A2HS_IDENTIFIER)
+    if (a2hs) {
+      a2hs.prompt()
+      a2hs.userChoice.then(result => {
+        if (result.outcome === 'accepted') {
+          window.alert('ok')
+        } else {
+          window.alert('hmm')
+        }
+        a2hs = null
+      })
+    }
+  }
+
   const handleClick = () => {
     if (shouldUseBackIcon) {
       if (window.history.state) {
@@ -109,6 +124,9 @@ export default ({ path = '/' }) => {
               </ListItem>
               <ListItem button onClick={() => navigate('/setting')}>
                 <ListItemText>Pengaturan</ListItemText>
+              </ListItem>
+              <ListItem button onClick={handleInstall}>
+                <ListItemText>Install Aplikasi</ListItemText>
               </ListItem>
             </List>
             <Typography
