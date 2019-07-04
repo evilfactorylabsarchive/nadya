@@ -49,13 +49,7 @@ export default class App extends Component {
     navigate(`/${subscriptionId}/`)
   }
 
-  _handleInstall = event => {
-    event.preventDefault()
-    window.localStorage.setItem('@nadya:a2hs', event)
-  }
-
   componentDidMount() {
-    window.addEventListener('beforeinstallprompt', this._handleInstall)
     listSubscription()
       .then(docs => {
         this.setState({ subscriptions: docs })
@@ -63,10 +57,6 @@ export default class App extends Component {
       .catch(err => {
         throw err
       })
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('beforeinstallprompt', this._handleInstall)
   }
 
   render() {
