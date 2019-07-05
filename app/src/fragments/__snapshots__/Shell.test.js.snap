@@ -13,7 +13,7 @@ exports[`Fragments: Shell.js should render without crash 1`] = `
       </p>
     </header>
     <div
-      style="max-height: 90vh; overflow-y: auto;"
+      style="max-height: 77.7vh; overflow-y: auto;"
     />
     <button
       class="MuiButtonBase-root MuiFab-root MuiFab-primary"
