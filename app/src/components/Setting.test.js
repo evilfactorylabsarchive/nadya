@@ -7,7 +7,8 @@ afterAll(async () => {
 describe('Fragments: Setting.js', () => {
   test('It should render Setting screen', () => {
     const user = {
-      _id: 'xxx'
+      _id: 'xxx',
+      created_at: new Date(1562000400000)
     }
     const updateUser = () => {}
     const { container } = render(
