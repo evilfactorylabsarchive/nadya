@@ -27,7 +27,7 @@ else
   COMMIT_RANGE="FETCH_HEAD $(git merge-base FETCH_HEAD canary)"
 fi
 
-if [[ $TRAVIS_BRANCH == "master" ]]; then
+if [[ $TRAVIS_BRANCH == "master" ]] || [[ -n "$TRAVIS_TAG" ]]; then
   REACT_APP_NADYA_VER=$TRAVIS_TAG
 else
   REACT_APP_NADYA_VER=$(echo $TRAVIS_PULL_REQUEST_SHA | cut -c 1-7)
