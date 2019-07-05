@@ -90,7 +90,7 @@ export default ({ path = '/' }) => {
 
     setShouldUseBackButton(path !== '/')
 
-    if (navigator.serviceWorker.controller) {
+    if (navigator.serviceWorker && navigator.serviceWorker.controller) {
       navigator.serviceWorker.ready.then(_ => {
         if (!isAppInstalled) {
           setAppInstalled(false)
