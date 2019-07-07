@@ -18,8 +18,9 @@ import MenuIcon from '@material-ui/icons/Menu'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
+import LogoType from '../assets/logotype.png'
 
-import { APP_VER } from '../constants'
+import { APP_VER, A2HS_IDENTIFIER } from '../constants'
 import { getUser, getUserIdFromLS } from 'services/user'
 
 const useStyles = makeStyles(theme => ({
@@ -38,25 +39,79 @@ const useStyles = makeStyles(theme => ({
     color: '#fff',
     backgroundColor: deepOrange[500]
   },
-  menuButton: {
-    marginRight: theme.spacing(2)
-  },
   title: {
     flexGrow: 1
+  },
+  logoContainer: {
+    margin: 'auto',
+    paddingRight: theme.spacing(4)
+  },
+  logoType: {
+    float: 'left',
+    width: 120
   }
 }))
 
-export default function ButtonAppBar({ title, shouldUseBackIcon }) {
+export default ({ path = '/' }) => {
   const classes = useStyles()
   const userId = getUserIdFromLS()
+
+  const [a2hsDelegator, setA2hsDelegator] = useState({})
+  const [appInstalled, setAppInstalled] = useState(true)
+  const [shouldUseBackIcon, setShouldUseBackButton] = useState(false)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [user, setUser] = useState({})
 
+  const checkIsInstalled = () => {
+    setAppInstalled(true)
+    window.localStorage.setItem(A2HS_IDENTIFIER, true)
+  }
+
+  const handleInstall = event => {
+    event.preventDefault()
+    setA2hsDelegator(event)
+  }
+
+  const addToHomeScreen = () => {
+    a2hsDelegator.prompt()
+    a2hsDelegator.userChoice.then(result => {
+      if (result.outcome !== 'accepted') {
+        console.log('Installed')
+      }
+    })
+  }
+
   useEffect(() => {
+    const isAppInstalled = window.localStorage.getItem(A2HS_IDENTIFIER)
+
     getUser(userId).then(user => {
       setUser(user)
     })
-  }, [userId])
+
+    setShouldUseBackButton(path !== '/')
+
+    if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+      navigator.serviceWorker.ready.then(_ => {
+        if (!isAppInstalled) {
+          setAppInstalled(false)
+        }
+      })
+    }
+
+    if (!isAppInstalled) {
+      window.addEventListener('appinstalled', checkIsInstalled)
+      window.addEventListener('beforeinstallprompt', handleInstall)
+    } else {
+      setAppInstalled(true)
+    }
+
+    return function cleanup() {
+      if (!isAppInstalled) {
+        window.removeEventListener('appinstalled', checkIsInstalled)
+        window.removeEventListener('beforeinstallprompt', handleInstall)
+      }
+    }
+  }, [userId, path])
 
   const handleClick = () => {
     if (shouldUseBackIcon) {
@@ -94,9 +149,17 @@ export default function ButtonAppBar({ title, shouldUseBackIcon }) {
               <ListItem button onClick={() => navigate('/')}>
                 <ListItemText primary='Subscription saya' />
               </ListItem>
+              <ListItem button onClick={() => navigate('/onboarding')}>
+                <ListItemText primary='Tentang' />
+              </ListItem>
               <ListItem button onClick={() => navigate('/setting')}>
                 <ListItemText>Pengaturan</ListItemText>
               </ListItem>
+              {!appInstalled && (
+                <ListItem button onClick={addToHomeScreen}>
+                  <ListItemText>Install Aplikasi</ListItemText>
+                </ListItem>
+              )}
             </List>
             <Typography
               variant='body2'
@@ -117,16 +180,11 @@ export default function ButtonAppBar({ title, shouldUseBackIcon }) {
           >
             {shouldUseBackIcon ? <BackIcon /> : <MenuIcon />}
           </IconButton>
-          <Typography variant='h6' className={classes.title}>
-            {title}
-          </Typography>
+          <div className={classes.logoContainer}>
+            <img alt='nadya logo' className={classes.logoType} src={LogoType} />
+          </div>
         </Toolbar>
       </AppBar>
     </div>
   )
-}
-
-ButtonAppBar.defaultProps = {
-  title: 'Manage Subscriptions',
-  shouldUseBackIcon: false
 }

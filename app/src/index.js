@@ -1,46 +1,68 @@
-import React from 'react'
+import React, { Suspense, lazy } from 'react'
 import Navbar from './components/Navbar'
 
 import { render } from 'react-dom'
 import { Router, Location } from '@reach/router'
-import { Detail, Edit, Shell, Onboarding, Setting } from './fragments'
+import { LinearProgress } from '@material-ui/core'
+
+import UserContext from './contexts/UserContext'
+import ProtectedRoute from './components/AuthHOC'
 
 import * as serviceWorker from './serviceWorker'
 
 import './App.css'
 
-const NavbarWithTitle = ({ path }) => {
-  // TODO: create better solution for his
-  // maybe using Context or something similar
-  let title = undefined
-  let shouldUseBackIcon = false
-  if (path.includes('edit')) {
-    title = 'Edit Subscription'
-    shouldUseBackIcon = true
-  } else if (path === '/setting') {
-    title = 'Pengaturan'
-    shouldUseBackIcon = true
-  } else if (path !== '/') {
-    title = 'Detail'
-    shouldUseBackIcon = true
-  }
-  return <Navbar title={title} shouldUseBackIcon={shouldUseBackIcon} />
-}
+const Add = lazy(() => import('./fragments/Add'))
+const Pick = lazy(() => import('./fragments/Pick'))
+const Detail = lazy(() => import('./fragments/Detail'))
+const Edit = lazy(() => import('./fragments/Edit'))
+const Shell = lazy(() => import('./fragments/Shell'))
+const Onboarding = lazy(() => import('./fragments/Onboarding'))
+const Setting = lazy(() => import('./fragments/Setting'))
 
-render(
-  <>
-    <Location>
-      {({ location }) => <NavbarWithTitle path={location.pathname} />}
-    </Location>
-    <Router>
-      <Shell path='/' />
-      <Onboarding path='/onboarding' />
-      <Setting path='/setting' />
-      <Detail path='/:subscription_id' />
-      <Edit path='/:subscription_id/edit' />
-    </Router>
-  </>,
-  document.getElementById('app')
+const Loading = () => (
+  <LinearProgress
+    style={{
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%'
+    }}
+  />
 )
 
-serviceWorker.unregister()
+class App extends React.Component {
+  state = {
+    userId: null,
+    setUserId: userId => {
+      this.setState({ userId })
+    }
+  }
+
+  render() {
+    return (
+      <UserContext.Provider value={this.state}>
+        {this.state.userId && (
+          <Location>
+            {({ location }) => <Navbar path={location.pathname} />}
+          </Location>
+        )}
+        <Suspense fallback={<Loading />}>
+          <Router>
+            <Onboarding path='/onboarding' />
+            <ProtectedRoute Component={Shell} path='/' />
+            <ProtectedRoute Component={Add} path='/pick' />
+            <ProtectedRoute Component={Pick} path='/pick/:serviceName' />
+            <ProtectedRoute Component={Setting} path='/setting' />
+            <ProtectedRoute Component={Detail} path='/:subscriptionId' />
+            <ProtectedRoute Component={Edit} path='/:subscriptionId/edit' />
+          </Router>
+        </Suspense>
+      </UserContext.Provider>
+    )
+  }
+}
+
+render(<App />, document.getElementById('app'))
+
+serviceWorker.register()

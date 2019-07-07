@@ -1,27 +1,29 @@
 import React, { useState } from 'react'
 import DayjsUtils from '@date-io/dayjs'
-import Dialog from '@material-ui/core/Dialog'
-import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
-import IconButton from '@material-ui/core/IconButton'
-import Typography from '@material-ui/core/Typography'
 import BackIcon from '@material-ui/icons/ArrowBack'
-import CardActions from '@material-ui/core/CardActions'
-import CardContent from '@material-ui/core/CardContent'
-import Button from '@material-ui/core/Button'
-import Card from '@material-ui/core/Card'
-import Slide from '@material-ui/core/Slide'
-import TextField from '@material-ui/core/TextField'
-import InputLabel from '@material-ui/core/InputLabel'
-import InputAdornment from '@material-ui/core/InputAdornment'
-import FormControl from '@material-ui/core/FormControl'
-import OutlinedInput from '@material-ui/core/OutlinedInput'
-import MenuItem from '@material-ui/core/MenuItem'
-import Select from '@material-ui/core/Select'
-import { makeStyles } from '@material-ui/core/styles'
-import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
 
-import { addSubscription } from '../services/subscription'
+import {
+  Dialog,
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  CardActions,
+  CardContent,
+  Button,
+  Card,
+  Slide,
+  TextField,
+  InputLabel,
+  InputAdornment,
+  FormControl,
+  OutlinedInput,
+  MenuItem,
+  Select
+} from '@material-ui/core'
+import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
+import { makeStyles } from '@material-ui/core/styles'
+import { addSubscription } from 'services/subscription'
 
 const Transition = React.forwardRef((props, ref) => {
   return <Slide direction='left' ref={ref} {...props} />
@@ -49,7 +51,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function Pick({
   handleTopLevelClose,
-  handleClose,
+  handleBack,
   activeSubscription
 }) {
   const classes = useStyles()
@@ -61,7 +63,7 @@ export default function Pick({
     !cost || !costInterval || !startSubscription
 
   const handleAddSubscription = () => {
-    return addSubscription({
+    addSubscription({
       serviceId: activeSubscription.id,
       title: activeSubscription.title,
       period: costInterval,
@@ -69,14 +71,17 @@ export default function Pick({
       firstBill: startSubscription
     })
       .then(_ => handleTopLevelClose())
-      .catch(err => window.alert(err))
+      .catch(err => {
+        window.alert(err)
+        throw err
+      })
   }
 
   return (
     <Dialog
       fullScreen
       open
-      onClose={handleClose}
+      onClose={handleBack}
       TransitionComponent={Transition}
     >
       <AppBar className={classes.appBar}>
@@ -84,7 +89,7 @@ export default function Pick({
           <IconButton
             edge='start'
             color='inherit'
-            onClick={handleClose}
+            onClick={handleBack}
             aria-label='Close'
           >
             <BackIcon />

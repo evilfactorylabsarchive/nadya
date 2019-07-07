@@ -1,19 +1,48 @@
-import React from 'react'
-import Button from '@material-ui/core/Button'
-import Dialog from '@material-ui/core/Dialog'
-import Slide from '@material-ui/core/Slide'
-import MobileStepper from '@material-ui/core/MobileStepper'
-
+import React, { useState } from 'react'
 import { navigate } from '@reach/router'
+import {
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Slide,
+  MobileStepper
+} from '@material-ui/core'
 import { checkLogin, registerUser } from '../services/user'
 
-import Welcome from '../assets/illustrations/welcome.png'
-import Money from '../assets/illustrations/money.png'
-import Love from '../assets/illustrations/love.png'
+import UserContext from 'contexts/UserContext'
+
+import Welcome from 'assets/illustrations/welcome.png'
+import Money from 'assets/illustrations/money.png'
+import Love from 'assets/illustrations/love.png'
+import { createNotification } from 'services/notification'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='up' ref={ref} {...props} />
 })
+
+const AlertDialog = ({ isDialogOpen, handleClose, handleAllow }) => (
+  <div>
+    <Dialog
+      open={isDialogOpen}
+      onClose={handleClose}
+      disableBackdropClick
+      disableEscapeKeyDown
+    >
+      <DialogTitle>Izinkan Notifikasi</DialogTitle>
+      <DialogContent>
+        <DialogContentText id='alert-dialog-description'>
+          Kami membutuhkan izin kamu untuk bisa mengirimkan notifikasi
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleAllow}>Izinkan</Button>
+      </DialogActions>
+    </Dialog>
+  </div>
+)
 
 const onBoardingStyle = {
   marginTop: '4rem',
@@ -24,6 +53,8 @@ const onBoardingStyle = {
 }
 
 export default function FullScreenDialog() {
+  const userContext = React.useContext(UserContext)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [activeStep, setActiveStep] = React.useState(0)
   const messages = [
     {
@@ -43,17 +74,47 @@ export default function FullScreenDialog() {
     }
   ]
 
+  function handleAllow() {
+    if ('Notification' in window) {
+      if (Notification.permission !== 'denied') {
+        return Notification.requestPermission()
+          .then(() => {
+            registerUser()
+              .then(user => {
+                userContext.setUserId(user.id)
+                createNotification({
+                  title: 'Terima Kasih!',
+                  message:
+                    'Notifikasi seputar subscriptionmu akan muncul disini'
+                })
+                navigate('/')
+              })
+              .catch(err => {
+                console.log(err)
+              })
+          })
+          .catch(err => {
+            window.alert('please atuh :(')
+          })
+      }
+    }
+  }
+
   function handleNext() {
     if (activeStep < 2) {
       setActiveStep(prevActiveStep => prevActiveStep + 1)
     } else {
-      return checkLogin().then(user => {
-        if (!user.total_rows) {
-          return registerUser().then(() => navigate('/'))
-        }
-        navigate('/')
-      })
+      checkLogin()
+        .then(() => navigate('/'))
+        .catch(() => {
+          setIsDialogOpen(true)
+          return
+        })
     }
+  }
+
+  const handleClose = () => {
+    setIsDialogOpen(false)
   }
 
   function handleBack() {
@@ -100,6 +161,11 @@ export default function FullScreenDialog() {
           }
         />
       </Dialog>
+      <AlertDialog
+        isDialogOpen={isDialogOpen}
+        handleClose={handleClose}
+        handleAllow={handleAllow}
+      />
     </div>
   )
 }
