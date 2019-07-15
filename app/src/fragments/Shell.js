@@ -10,6 +10,7 @@ import SimpleIcons from 'simple-icons-react-component'
 
 import { navigate } from '@reach/router'
 import { toCurrency, getPeriod } from 'utils'
+import { addNotification } from 'services/notification'
 import { listSubscription } from 'services/subscription'
 
 const classes = {
@@ -98,6 +99,13 @@ export default class App extends Component {
           this.setState({ totalBill })
         })
         this.setState({ subscriptions: docs })
+        addNotification(docs, function() {
+          if (navigator.serviceWorker.controller) {
+            navigator.serviceWorker.controller.postMessage({
+              type: 'NOTIFICATION'
+            })
+          }
+        })
       })
       .catch(err => {
         throw err
