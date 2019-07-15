@@ -33,6 +33,13 @@ function getObjectStore(dbInstance, storeName, mode) {
 }
 
 function createIdbInstance() {
+  if (!window.indexedDB) {
+    console.error(
+      "Your browser doesn't support IndexedDB and we are not implementing how to handle that :))"
+    )
+    return
+  }
+
   const db = indexedDB.open(DB_NAME, DB_VERSION)
 
   db.onsuccess = function(e) {
@@ -42,13 +49,28 @@ function createIdbInstance() {
   db.onerror = function(e) {
     console.error('idb:', e.target.errorCode)
   }
+
+  db.onupgradeneeded = function(e) {
+    e.currentTarget.result.createObjectStore('notifications', {
+      keyPath: 'id',
+      autoIncrement: true
+    })
+  }
 }
 
 export function createNotification({ title, message }) {
-  new Notification(title, {
-    body: message,
-    icon: '/images/icons/icon-384x384.png'
-  })
+  if ('serviceWorker' in navigator) {
+    if (navigator.serviceWorker.controller) {
+      navigator.serviceWorker.getRegistration().then(registration => {
+        registration.showNotification(title, {
+          body: message,
+          icon: '/images/icons/icon-384x384.png'
+        })
+      })
+    }
+  } else {
+    window.alert("Your browser doesn't support serviceWorker")
+  }
 }
 
 if (!idbInstance) createIdbInstance()
