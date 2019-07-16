@@ -86,11 +86,10 @@ export default function FullScreenDialog() {
                   title: 'Terima Kasih!',
                   message:
                     'Notifikasi seputar subscriptionmu akan muncul disini'
-                }).then(() => {
-                  setTimeout(() => {
-                    navigate('/')
-                  }, 500)
                 })
+                setTimeout(() => {
+                  navigate('/')
+                }, 500)
               })
               .catch(err => {
                 console.log(err)
