@@ -87,7 +87,9 @@ export default function FullScreenDialog() {
                   message:
                     'Notifikasi seputar subscriptionmu akan muncul disini'
                 })
-                navigate('/')
+                setTimeout(() => {
+                  navigate('/')
+                }, 500)
               })
               .catch(err => {
                 console.log(err)
