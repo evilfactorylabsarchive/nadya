@@ -90,9 +90,9 @@ function check(queue) {
     for (let index in queue) {
       if (new Date(queue[index].billedAt).getDate() === today) {
         showNotification({
+          _id: queue[index]._id,
           title: queue[index].title,
-          body: queue[index].cost,
-          index
+          body: queue[index].cost
         })
       } else {
         console.log('not today', queue[index])
@@ -102,6 +102,7 @@ function check(queue) {
 }
 
 function startTimer(queue) {
+  const FOR_TESTING = 60000
   const ONE_MONTH = 720 // 24 (hours) * 30 (day)
   const ONE_HOUR = 3600000
 
@@ -116,7 +117,7 @@ function startTimer(queue) {
       clearInterval(timerInstance)
       console.log('Timer expired')
     }
-  }, ONE_HOUR)
+  }, FOR_TESTING)
 }
 
 if (!idbInstance) {
