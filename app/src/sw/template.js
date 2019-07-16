@@ -117,7 +117,7 @@ function startTimer(queue) {
       clearInterval(timerInstance)
       console.log('Timer expired')
     }
-  }, FOR_TESTING)
+  }, ONE_HOUR)
 }
 
 if (!idbInstance) {
